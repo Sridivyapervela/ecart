@@ -9,8 +9,8 @@ class UserController extends Controller
 {  
     public function __construct()
     {
-        $this->middleware('auth')->except(['destroy']);
-        $this->middleware('admin')->except(['show','index']);
+       $this->middleware('admin')->except(['show','index']);
+       $this->middleware('auth');
     }
     /**
      * Display a listing of the resource.

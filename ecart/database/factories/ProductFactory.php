@@ -3,7 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\Product;
-use Illuminate\Database\Seeders\CategorySeeder;
+use App\Models\Category;
+use Database\Seeders\CategorySeeder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ProductFactory extends Factory
@@ -24,11 +25,10 @@ class ProductFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
-            'code' => $this->faker->barcode()->unique(),
+            'code' => $this->faker->ean8(),
             'price' => $this->faker->numberBetween(200,10000),
             'status' => $this->faker->randomElement($array=array('active','inactive')),
             'available_stock' => $this->faker->numberBetween(0,10000),
-            'category_id' => $category->id,
         ];
     }
 }

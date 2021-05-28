@@ -63,7 +63,14 @@
                                     </a>
                                 @endif
                             </div>
-                            <a href="/register">Not a member?Sign in</a>
+                        </div>
+                        <br>
+                        <div class="col-md-6 offset-md-4">
+                        <a href="/register">Not a member? Sign in</a>
+                        </div>
+                        <br>
+                        <div class="col-md-6 offset-md-4">
+                        <a href="{{ url('/home') }}">Skip Sign in?</a>
                         </div>
                     </form>
                 </div>

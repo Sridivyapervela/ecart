@@ -1,10 +1,11 @@
- <?php
+<?php
 
 namespace Database\Factories;
 
+use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Order;
 use App\Models\Order_item;
-use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Product;
 use Carbon\Carbon;
 
 class OrderFactory extends Factory
@@ -23,10 +24,22 @@ class OrderFactory extends Factory
      */
     public function definition()
     {
+        $products=Product::all();
+        $product_ids=$products->id;
         $product_id=array_slice(shuffle($product_ids),0,1);
         Order_item::factory()->count(rand(1,3))->create(
             ['order_id'=> $order->id,
-            'product_id'=>$product_id]);
+            'product_id'=>$product_id])
+            ->each(function($order_item){
+                DB::table('order_item_product')
+                ->insert(
+                [
+                'order_item_id' => $order_item->id,
+                'product_id' => $product_id,
+                'created_at' => Now(),
+                'updated_at' => Now()
+                ]);
+            });
         $order_items=Order_item::where('order_id','=','$order->id');
         $amount=0;
         foreach($order_items as $order_item)
@@ -34,7 +47,6 @@ class OrderFactory extends Factory
             $amount=$amount+($order_item->price*$order_item->quantity);
         }
         return [
-            'user_id'=> $user->id,
             'amount' => $amount,
             'status' => $this->faker->randomElement($array=array('pending','success','failed')),
             'ordered_at' => Carbon::now(),

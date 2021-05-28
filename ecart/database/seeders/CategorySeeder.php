@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -12,7 +13,7 @@ class CategorySeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public static function run()
     {
         Category::factory()->count(20)->create()
         ->each(function ($category)

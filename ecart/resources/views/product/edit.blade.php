@@ -46,6 +46,12 @@
                             <small class="form-text text-danger">{!! $errors->first('category_id') !!}</small>
                             </div>
 
+                            <div class="form-group">
+                            <label for="image" class="col-md-4  col-form-label text-md-right">{{ __('Product Image ') }}</label>
+                            <input id="image" type="file" class="form-control @error('image') is-invalid @enderror" name="image" value="{{ old('image') }}" required autocomplete="image">
+                            <small class="form-text text-danger">{!! $errors->first('image') !!}</small>
+                            </div>
+
                             <input class="btn btn-primary mt-4" type="submit" value="Save product">
                         </form>
                         <a class="btn btn-primary float-right" href="/product"><i class="fas fa-arrow-circle-up"></i> Back</a>

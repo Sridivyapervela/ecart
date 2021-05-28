@@ -13,13 +13,16 @@
                                 <ul class="list-group">
                                         @foreach($categories as $category)
                                             <li class="list-group-item">
-                                                <a title="Show Products" href="/category/show/{{ $category->id }}">{{ $category->name }}</a>
+                                                <a title="Show Products" href="/category/{{ $category->id }}">{{ $category->name }}</a>
                                             </li>
                                         @endforeach
                                 </ul>
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="mt-3">
+                    {{ $categories->links() }}
                 </div>
 
                 <div class="mt-4">

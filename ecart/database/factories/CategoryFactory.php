@@ -23,7 +23,7 @@ class CategoryFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
-            'code' => $this->faker->barcode()->unique(),
+            'code' => $this->faker->ean8(),
         ];
     }
 }

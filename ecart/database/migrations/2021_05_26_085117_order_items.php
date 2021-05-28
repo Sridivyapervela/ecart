@@ -15,13 +15,13 @@ class OrderItems extends Migration
     {
         Schema::create('order_items', function (Blueprint $table) {
             $table->id();
-            $table->bigInt('order_id');
+            $table->unsignedBigInteger('order_id');
             $table->foreign('order_id')
             ->references(['id'])->on('orders')
             ->onDelete('cascade');
             $table->float('price',32);
-            $table->int('quantity');
-            $table->bigInt('product_id');
+            $table->integer('quantity');
+            $table->unsignedBigInteger('product_id');
             $table->foreign('product_id')
             ->references(['id'])->on('products')
             ->onDelete('cascade');

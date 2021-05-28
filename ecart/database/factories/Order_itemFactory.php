@@ -1,9 +1,8 @@
 <?php
-
 namespace Database\Factories;
-
-use App\Models\Order_item;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Order_item;
+use Illuminate\Support\Facades\DB;
 
 class Order_itemFactory extends Factory
 {
@@ -21,12 +20,9 @@ class Order_itemFactory extends Factory
      */
     public function definition()
     {
-
         return [
-            'order_id'=>$order_id,
             'price'=>$this->faker->numberBetween(100,25000),
             'quantity'=>$this->faker->numberBetween(1,10),
-            'product_id'=>$product_id
         ];
     }
 }

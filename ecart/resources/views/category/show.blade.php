@@ -6,10 +6,12 @@
             <div class="col-md-11">
                 <div class="card">
                     <div style="font-size: 150%;" class="card-header">{{ $category->name }}
-                        @if($user->role=='admin')
+                        @auth
+                        @if(auth()->user()->role=='admin')
                         <a class='btn btn-sm ml-2' href='/edit/{{$category->id}}'>Edit category</a>
                         <a class='btn btn-sm ml-2' href='/category/destroy/{{$category->id}}'>Delete category</a>
                         @endif
+                        @endauth
                     </div>
                     <div class="card-body">
                         <div class="row">

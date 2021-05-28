@@ -8,6 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     use HasFactory;
+    public function user(){
+        return $this->belongsTo('App\Models\User');
+    }
+
+    public function order_items(){
+        return $this->hasMany('App\Models\Order_item');
+    }
+    
     protected $fillable = [
         'user_id',
         'amount',

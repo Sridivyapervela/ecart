@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
 
 class ProductController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except(['destroy']);
         $this->middleware('admin')->except(['show','index']);
+        $this->middleware('auth')->except(['show','index']);
     }
     /**
      * Display a listing of the resource.
@@ -47,7 +48,8 @@ class ProductController extends Controller
             'price'=> 'required',
             'status'=> 'required',
             'available_stock'=> 'required',
-            'category_id'=>'required'
+            'category_id'=>'required',
+            'image' => 'mimes:jpeg,jpg,bmp,png,gif'
             ]);
         $status=['active','inactive'];
         $categories=Category::all();
@@ -65,6 +67,9 @@ class ProductController extends Controller
                     //'product_id'=>auth()->id(),
                 ]);
                 $product->save();
+                if ($request->image) {
+                    $this->saveImages($request->image, $prodcut->id);
+                }
                 return $this->index()->with([
                     'mes_suc' => 'product '. $product->name .' is added succesfully'
                 ]);  
@@ -123,7 +128,8 @@ class ProductController extends Controller
         'price'=> 'required',
         'status'=> 'required',
         'available_stock'=> 'required',
-        'category_id'=>'required'
+        'category_id'=>'required',
+        'image' => 'mimes:jpeg,jpg,bmp,png,gif'
         ]);
         $status=['active','inactive'];
         $categories=Category::all();
@@ -139,6 +145,9 @@ class ProductController extends Controller
             'available_stock'=>$request->available_stock,
             'category_id'=>$request->category_id
             ]);
+            if ($request->image) {
+                $this->saveImages($request->image, $prodcut->id);
+            }
             return redirect('/products'); 
             }
             else{
@@ -169,5 +178,24 @@ class ProductController extends Controller
         // ->with([
         //     'mes_suc' => 'product '. $old .' is deleted succesfully'
         //]);
+    }
+    public function saveImages($imageInput, $product_id)
+    {
+        $image = Image::make($imageInput);
+        if ( $image->width() > $image->height() ) { // Landscape
+            $image->widen(400)
+                ->save(public_path() . "/img/products/" . $product_id . "_large.jpg");
+            $image = Image::make($imageInput);
+            $image->widen(60)
+                ->save(public_path() . "/img/products/" . $product_id . "_thumb.jpg");
+        }
+        else { // Portrait
+            $image->heighten(400)
+                ->save(public_path() . "/img/products/" . $product_id . "_large.jpg");
+            $image = Image::make($imageInput);
+            $image->heighten(60)
+                ->save(public_path() . "/img/products/" . $product_id . "_thumb.jpg");
+        }
+
     }
 }

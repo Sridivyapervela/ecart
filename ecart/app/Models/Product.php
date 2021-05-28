@@ -16,4 +16,11 @@ class Product extends Model
         'available_stock',
         'category_id',
     ];
+    public function category(){
+        return $this->belongsTo('App\Models\Category');
+    }
+
+    public function order_items(){
+        return $this->belongsToMany('App\Models\Order_item');
+    }
 }

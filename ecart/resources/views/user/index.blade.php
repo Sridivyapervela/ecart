@@ -17,7 +17,7 @@
                         <div class="row">
                                 <ul class="list-group">
                                 <h5>My Orders</h5>
-                                    <a href="/user/show/{{$user->id}}">All Orders</a>
+                                    <a href="/user/{{$user->id}}">All Orders</a>
                                 </ul>
                                 
                             </div>
