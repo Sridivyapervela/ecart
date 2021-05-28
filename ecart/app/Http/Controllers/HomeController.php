@@ -23,7 +23,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $products=Product::all();
+        $products=Product::all()->paginate(50);
         //dump($products);
         return view('/product/index')->with(['products'=>$products]);
     }

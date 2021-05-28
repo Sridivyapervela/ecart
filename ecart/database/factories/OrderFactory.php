@@ -24,11 +24,10 @@ class OrderFactory extends Factory
      */
     public function definition()
     {
-        $products=Product::all();
-        $product_ids=$products->id;
-        $product_id=array_slice(shuffle($product_ids),0,1);
+        $product_id=Product::inRandomOrder()->first()->id;
+        $order_id=Order::first()->id;
         Order_item::factory()->count(rand(1,3))->create(
-            ['order_id'=> $order->id,
+            ['order_id'=>$order_id,
             'product_id'=>$product_id])
             ->each(function($order_item){
                 DB::table('order_item_product')
@@ -40,7 +39,7 @@ class OrderFactory extends Factory
                 'updated_at' => Now()
                 ]);
             });
-        $order_items=Order_item::where('order_id','=','$order->id');
+        $order_items=Order_item::where('order_id','=','$order_id');
         $amount=0;
         foreach($order_items as $order_item)
         {

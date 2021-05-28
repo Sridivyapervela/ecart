@@ -9,7 +9,7 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-9">
+                            <div class="col-md-12">
                                 @foreach($products as $product)
                                 <div class="col-md-4 float-left">
                                 @if(file_exists('img/products/' . $product->id . '_thumb.jpg'))
@@ -18,7 +18,7 @@
                                 </a>
                                 @endif
                                 </div>
-                                <div class="col-md-5">
+                                <div class="col-md-9">
                                 <ul class="list-group">
                                             <li class="list-group-item">
                                                 <a title="Product details" href="/product/{{ $product->id }}">{{ $product->name }}</a>
@@ -30,9 +30,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="mt-3">
-                    {{ $products->links() }}
                 </div>
                 <div class="mt-4">
                     <a class="btn btn-primary btn-sm" href="{{ URL::previous() }}"><i class="fas fa-arrow-circle-up"></i> Back to Overview</a>

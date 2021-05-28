@@ -21,9 +21,11 @@
                         </div>
                     </div>
                 </div>
-
+                <div class="mt-3">
+                    {{ $products->links() }}
+                </div>
                 <div class="mt-4">
-                    <a class="btn btn-primary btn-sm" href="{{ URL::previous() }}"><i class="fas fa-arrow-circle-up"></i> Back to Overview</a>
+                    <a class="btn btn-primary btn-sm" href="{{ URL::previous() }}"><i class="fas fa-arrow-circle-up"></i> Back to top</a>
                 </div>
             </div>
         </div>
