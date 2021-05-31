@@ -20,7 +20,7 @@ class CreateOrdersTable extends Migration
             ->references('id')->on('users')
             ->onDelete('cascade');
             $table->double('amount',64);
-            $table->integer('status');
+            $table->string('status');
             $table->text('ordered_at');
             $table->timestamps();
         });

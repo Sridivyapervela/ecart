@@ -215,9 +215,10 @@ class ProductController extends Controller
     {
         if($request->session()->has('user'))
         {
-            $cart=new Cart();
-            $cart->user_id=$request->session()->get('user')->id;
-            $cart->product_id=$request->product_id;
+            $cart=new Cart([
+                'user_id'=>$request->session()->get('user')->id,
+                'product_id'=>$request->product_id
+            ]);
             $cart->save();
             return view('/cartlist');
         }

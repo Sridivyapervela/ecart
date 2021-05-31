@@ -21,7 +21,7 @@ class CreateOrderItemProductTable extends Migration
             $table->primary(['orderItem_id', 'product_id']);
 
             $table->foreign('orderItem_id')
-                ->references('id')->on('orderItems')
+                ->references('id')->on('order_items')
                 ->onDelete('cascade');
 
             $table->foreign('product_id')

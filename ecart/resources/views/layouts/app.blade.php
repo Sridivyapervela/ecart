@@ -2,7 +2,8 @@
 use App\Http\Controllers\ProductController;
 $total=0;
 if(Session::has('user')){$total=ProductController::cartItem();}
-?><!doctype html>
+?>
+<!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
@@ -36,8 +37,8 @@ if(Session::has('user')){$total=ProductController::cartItem();}
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-                        <a href='/product' class="btn-sm btn-default">Products</a>
-                        <a href='/category' class="btn-sm btn-default">Categories</a>
+                        <a href='/product' class="btn-sm btn-primary">Products</a>
+                        <a href='/category' class="btn-sm btn-success">Categories</a>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -58,7 +59,7 @@ if(Session::has('user')){$total=ProductController::cartItem();}
                         @else
                         <div class="collapse navbar-collapse">
                             <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 {{ Auth::user()->name }}
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
@@ -74,7 +75,7 @@ if(Session::has('user')){$total=ProductController::cartItem();}
                             </li>
                         </div>
                         <div class="float-right">
-                        <a class="btn btn-sm btn-success" href="/cartlist">Cart({{$total}})</a>
+                            <a class="btn btn-sm btn-success" href="/cartlist">Cart({{$total}})</a>
                         </div>
                         @endguest
                     </ul>
