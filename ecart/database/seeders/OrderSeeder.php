@@ -19,7 +19,7 @@ class OrderSeeder extends Seeder
             // ->each(function ($order)
             // {  
             //     $product_id=array_slice(shuffle($product_ids),0,1);
-            //     Order_item::factory()->count(rand(1,3))->create(
+            //     OrderItem::factory()->count(rand(1,3))->create(
             //     ['order_id'=> $order->id,
             //     'product_id'=>$product_id]);
                 

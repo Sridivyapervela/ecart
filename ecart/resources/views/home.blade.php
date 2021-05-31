@@ -1,3 +1,7 @@
+<?php
+use App\Models\Product;
+$products=Product::orderBy('created_at','DESC');
+?>
 @extends('layouts.app')
 @section('content')
     <div class="container">
@@ -11,10 +15,16 @@
                             <div class="col-md-20">
                                 <ul class="list-group">
                                         @foreach($products as $product)
+                                        @if($product->status=='active')
                                             <li class="list-group-item">
                                                 <a title="Product details" href="/product/show/{{ $product->id }}">{{ $product->name }}</a>
+                                                <form action="/add_to_cart" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="product_id" value="{{$product->id}}">
                                                 <a class="btn btn-sm btn-success float-right" href="">Add to cart</a>
+                                                </form>
                                             </li>
+                                        @endif
                                         @endforeach
                                 </ul>
                             </div>
@@ -22,7 +32,7 @@
                     </div>
                 </div>
                 <div class="mt-3">
-                    {{ $products->links() }}
+                    {{ $products->links()}}
                 </div>
                 <div class="mt-4">
                     <a class="btn btn-primary btn-sm" href="{{ URL::previous() }}"><i class="fas fa-arrow-circle-up"></i> Back to top</a>

@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
     {
         User::factory(10)->create()->each(function ($user)
         {
-            Order::factory()->count(rand(1,5))->create(
+            Order::factory(count(rand(1,5)))->create(
                 ['user_id'=> $user->id,
                 ]);
     });

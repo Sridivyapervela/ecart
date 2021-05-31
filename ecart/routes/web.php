@@ -34,3 +34,8 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::post('/product', [ProductController::class,'store']);
 Route::post('/category', [CategoryController::class,'store']);
+Route::post('/add_to_cart', [ProductController::class,'addToCart']);
+Route::get('/cartlist', [ProductController::class,'cartList']);
+Route::post('/ordernow', [ProductController::class,'orderNow']);
+Route::post('/placeorder', [ProductController::class,'placeOrder']);
+

@@ -22,7 +22,7 @@ class CreateProductsTable extends Migration
             $table->integer('available_stock')->length(8);
             $table->unsignedBigInteger('category_id');
             $table->foreign('category_id')
-            ->references(['id'])->on('categories')
+            ->references('id')->on('categories')
             ->onDelete('cascade');
             $table->timestamps();
             $table->string('image')->nullable();

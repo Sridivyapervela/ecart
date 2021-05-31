@@ -18,8 +18,9 @@ class OrderController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        //
+    { 
+        $orders=Order::orderBy('created_at','DESC')->paginate(50);
+        return view('/order/index')->with(['orders'=>$orders]);   
     }
 
     /**
@@ -62,7 +63,9 @@ class OrderController extends Controller
      */
     public function edit(Order $order)
     {
-        //
+        return view('/order/edit')->with(
+            ['order' => $order
+            ]);
     }
 
     /**
@@ -74,7 +77,23 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
-        //
+        $request->validate([
+        'status'=> 'required',
+        ]);
+        $status=['success','failed'];
+        if(in_array($request->status,$status)){
+            $order->update([
+            'status'=>$request->status,
+            ]);
+            return redirect('/order')->with([
+                    'mes_suc' => 'Succesfully updated!'
+                ]);   
+            }
+        else{
+            return redirect('/order')->with([
+                'mes_suc' => 'Please choose a valid status:Success or failed'
+            ]); 
+        }
     }
 
     /**

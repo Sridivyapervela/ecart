@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Order;
-use App\Models\Order_item;
+use App\Models\OrderItem;
 use App\Models\Product;
 use Carbon\Carbon;
 
@@ -26,24 +26,24 @@ class OrderFactory extends Factory
     {
         $product_id=Product::inRandomOrder()->first()->id;
         $order_id=Order::first()->id;
-        Order_item::factory()->count(rand(1,3))->create(
+        OrderItem::factory(count(rand(1,3)))->create(
             ['order_id'=>$order_id,
             'product_id'=>$product_id])
-            ->each(function($order_item){
+            ->each(function($orderItem){
                 DB::table('order_item_product')
                 ->insert(
                 [
-                'order_item_id' => $order_item->id,
+                'orderItem_id' => $orderItem->id,
                 'product_id' => $product_id,
                 'created_at' => Now(),
                 'updated_at' => Now()
                 ]);
             });
-        $order_items=Order_item::where('order_id','=','$order_id');
+        $orderItems=OrderItem::where('order_id','=','$order_id');
         $amount=0;
-        foreach($order_items as $order_item)
+        foreach($orderItems as $orderItem)
         {
-            $amount=$amount+($order_item->price*$order_item->quantity);
+            $amount=$amount+($orderItem->price*$orderItem->quantity);
         }
         return [
             'amount' => $amount,

@@ -25,10 +25,10 @@
                                                 
                                                 &nbsp;<a title="Show Details" href="/order/{{ $order->id }}">{{ $order->ordered_at  $order->status }}</a>
                                                 <br>
-                                                @foreach($order->order_items as $order_item and $order_item->products as $order_item_product)
-                                                    <a href="/order/order_item/{{ $order_item->id }}"><span>{{ $order_item->id }}</span></a>
+                                                @foreach($order->orderItems as $orderItem and $orderItem->products as $orderItem_product)
+                                                    <a href="/order/orderItem/{{ $orderItem->id }}"><span>{{ $orderItem->id }}</span></a>
                                                     <br>
-                                                    <a href="/order/order_item/product/{{ $order_item_product->id }}"><span>{{ $order_item->products->name }}</span></a>
+                                                    <a href="/order/orderItem/product/{{ $orderItem_product->id }}"><span>{{ $orderItem->products->name }}</span></a>
                                                     
                                                 @endforeach
                                             </li>

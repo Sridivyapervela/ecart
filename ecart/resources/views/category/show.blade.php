@@ -20,18 +20,19 @@
                                 <h5>Products in {{ $category->name}}</h5>
                                 <ul class="list-group">
                                     @if($category->products->count() > 0)
-                                        @foreach($category->products as $category)
-                                            <li class="list-group-item">
-                                                
-                                                &nbsp;<a title="Show Details" href="/category/{{ $category->id }}">{{ $category->name }}</a>
-                                            </li>
+                                        @foreach($category->products as $product)
+                                        @if($product->status=='active')
+                                            <li class="list-group-item">    
+                                                &nbsp;<a title="Show Details" href="/product/{{ $product->id }}">{{ $product->name }}</a>
+                                            </li> 
+                                        @endif                                         
                                         @endforeach
-                                </ul>
-                                @else
+                                    @else
                                     <p>
-                                        {{ $category->name }} has no products yet.
+                                        {{ $product->name }} has no products yet.
                                     </p>
-                                @endif
+                                    @endif
+                                </ul>
                             </div>
                         </div>
 
@@ -41,7 +42,7 @@
                 </div>
 
                 <div class="mt-4">
-                    <a class="btn btn-primary btn-sm" href="{{ URL::previous() }}"><i class="fas fa-arrow-circle-up"></i> Back to Overview</a>
+                    <a class="btn btn-primary btn-sm" href="{{ URL::previous() }}"><i class="fas fa-arrow-circle-up"></i> Back to previous</a>
                 </div>
             </div>
         </div>

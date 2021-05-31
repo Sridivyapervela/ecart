@@ -1,4 +1,8 @@
-<!doctype html>
+<?php
+use App\Http\Controllers\ProductController;
+$total=0;
+if(Session::has('user')){$total=ProductController::cartItem();}
+?><!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
@@ -63,13 +67,14 @@
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                @csrf
+                                </form>
                                 </div>
-                                Cart()
                             </li>
+                        </div>
+                        <div class="float-right">
+                        <a class="btn btn-sm btn-success" href="/cartlist">Cart({{$total}})</a>
                         </div>
                         @endguest
                     </ul>

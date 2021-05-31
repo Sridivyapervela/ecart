@@ -11,6 +11,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 @foreach($products as $product)
+                                @if($product->status=='active')
                                 <div class="col-md-4 float-left">
                                 @if(file_exists('img/products/' . $product->id . '_thumb.jpg'))
                                 <a href="/img/products/{{$product->id}}_thumb.jpg" data-lightbox="img/products/{{$product->id}}_thumb.jpg" data-title="{{ $product->name }}">
@@ -22,10 +23,15 @@
                                 <ul class="list-group">
                                             <li class="list-group-item">
                                                 <a title="Product details" href="/product/{{ $product->id }}">{{ $product->name }}</a>
-                                                <a class="btn btn-sm btn-success float-left" href="">Add to cart</a>
+                                                <form action="/add_to_cart" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="product_id" value="{{$product->id}}">
+                                                <input class="btn btn-success mt-4 float-right" type="submit" value="Add to cart">
+                                                </form>
                                             </li>
                                 </ul>
                                 </div>
+                                @endif
                                 @endforeach
                             </div>
                         </div>
