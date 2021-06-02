@@ -3,6 +3,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +18,7 @@ use App\Http\Controllers\ProductController;
 
 Route::get('/', function () {
     if(auth()->user()){
-        return view('welcome');
+        return redirect('home');
     }
     else{
         return view('\auth\login');
@@ -27,6 +28,7 @@ Route::get('/', function () {
 Route::resource("user",UserController::class);
 Route::resource("category",CategoryController::class);
 Route::resource("product",ProductController::class);
+Route::resource("order",OrderController::class);
 
 Auth::routes();
 
@@ -38,4 +40,7 @@ Route::post('/add_to_cart', [ProductController::class,'addToCart']);
 Route::get('/cartlist', [ProductController::class,'cartList']);
 Route::post('/ordernow', [ProductController::class,'orderNow']);
 Route::post('/placeorder', [ProductController::class,'placeOrder']);
+Route::get('/product/delete/{id}',[ProductController::class,'destroy']);
+Route::get('/user/delete/{id}',[UserController::class,'destroy']);
+Route::get('/category/delete/{id}',[CategoryController::class,'destroy']);
 

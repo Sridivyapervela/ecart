@@ -1,3 +1,13 @@
+<?php
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+$userId=Auth::id();
+$products=DB::table('carts')
+        ->join('products','carts.product_id','=','products.id')
+        ->where('carts.user_id',$userId)
+        ->select('products.*')
+        ->get();
+?>
 @extends('layouts.app')
 
 @section('content')
@@ -14,17 +24,15 @@
                             @csrf
                             <input class="btn btn-primary mt-4" type="submit" value="Order now">
                             <br>
-                                @foreach($products as $product)
-                                <div class="col-md-6 float-left">
-                                @if(file_exists('img/products/' . $product->id . '_thumb.jpg'))
-                                <a href="/img/products/{{$product->id}}_thumb.jpg" data-lightbox="img/products/{{$product->id}}_thumb.jpg" data-title="{{ $product->name }}">
-                                    <img class="img-fluid" src="/img/products/{{$product->id}}_thumb.jpg" alt="">
-                                </a>
-                                @endif
-                                </div>
-                                <div class="col-md-6 float-right">
+                            @foreach($products as $product)
+                                <div class="col-md-6">
                                 <ul class="list-group">
                                     <li class="list-group-item">
+                                        @if(file_exists('img/products/' . $product->id . '_thumb.jpg'))
+                                                <a href="/img/products/{{$product->id}}_thumb.jpg" data-lightbox="img/products/{{$product->id}}_thumb.jpg" data-title="{{ $product->name }}">
+                                                <img class="img-fluid" src="/img/products/{{$product->id}}_thumb.jpg" alt="">
+                                                </a>
+                                        @endif
                                         <a title="Product details" href="/product/{{ $product->id }}">{{ $product->name }}</a>
                                     </li>
                                     <li class="list-group-item">
@@ -32,12 +40,13 @@
                                     </li>
                                     <li class="list-group-item">
                                         <label for="quantity" class="col-md-3 col-form-label text-md-right">{{ __('Quantity') }}</label>
-                                        <input id="quantity" type="number" class="form-control @error('quantity') is-invalid @enderror" name="quantity" required>
+                                        <input name="quantity[]" type="number" min='1' class="form-control @error('quantity') is-invalid @enderror" required>
                                     </li>
                                 </ul>
                                 </div>
                                 <br>
-                                @endforeach
+                            @endforeach
+                                <input type="hidden" name="products[]" value="{{ $products }}">
                                 <input class="btn btn-primary mt-4" type="submit" value="Order now">
                             </form>
                         </div>

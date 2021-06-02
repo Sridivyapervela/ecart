@@ -11,14 +11,17 @@ use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 use Session;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
+use Mail;
 
 class ProductController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('admin')->except(['show','index','addToCart','cartItem','cartList','orderNow']);
-    //     $this->middleware('auth')->except(['show','index','addToCart','cartItem','cartList','orderNow']);
-    // }
+    public function __construct()
+    {
+        $this->middleware('auth')->except(['show','index']);
+        $this->middleware('admin')->except(['show','index','addToCart','cartItem','cartList','orderNow','placeOrder']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -143,8 +146,7 @@ class ProductController extends Controller
         'image' => 'mimes:jpeg,jpg,bmp,png,gif'
         ]);
         $status=['active','inactive'];
-        $categories=Category::all();
-        $category_ids=$categories->id;
+        $category_ids=Category::where('id' ,'>' ,0)->pluck('id')->toArray();
         if(in_array($request->status,$status)){
             if(in_array($request->category_id,$category_ids))
             {
@@ -157,7 +159,7 @@ class ProductController extends Controller
             'category_id'=>$request->category_id
             ]);
             if ($request->image) {
-                $this->saveImages($request->image, $prodcut->id);
+                $this->saveImages($request->image, $product->id);
             }
             return redirect('/product')->with([
                     'mes_suc' => 'Succesfully updated!'
@@ -184,100 +186,115 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        abort_unless($user->role='admin',403);
+        // abort_unless($user->role='admin',403);
         $old=$product->name;
-        $product->delete();
-        return $this->index();
-        // ->with([
-        //     'mes_suc' => 'product '. $old .' is deleted succesfully'
-        //]);
+        $product->forceDelete();
+        return redirect('product')->with([
+            'mes_suc' => 'product '. $old .' is deleted succesfully'
+        ]);
     }
     public function saveImages($imageInput, $product_id)
     {
         $image = Image::make($imageInput);
         if ( $image->width() > $image->height() ) { // Landscape
-            $image->widen(400)
+            $image->widen(500)
                 ->save(public_path() . "/img/products/" . $product_id . "_large.jpg");
             $image = Image::make($imageInput);
-            $image->widen(60)
+            $image->widen(120)
                 ->save(public_path() . "/img/products/" . $product_id . "_thumb.jpg");
         }
         else { // Portrait
-            $image->heighten(400)
+            $image->heighten(500)
                 ->save(public_path() . "/img/products/" . $product_id . "_large.jpg");
             $image = Image::make($imageInput);
-            $image->heighten(60)
+            $image->heighten(120)
                 ->save(public_path() . "/img/products/" . $product_id . "_thumb.jpg");
         }
 
     }
     public function addToCart(Request $request)
     {
-        if($request->session()->has('user'))
-        {
-            $cart=new Cart([
-                'user_id'=>$request->session()->get('user')->id,
-                'product_id'=>$request->product_id
-            ]);
-            $cart->save();
-            return view('/cartlist');
-        }
-        else{
-            return redirect('/login');
-        }
+            $cart=Cart::firstOrCreate(['user_id'=>Auth::id(),
+                'product_id'=>$request->product_id]);
+            return view('/product/cartlist');
     }
-    public function cartItem()
+    public static function cartItem()
     {
-            $userId=Session::get('user')->id;
-            return Cart::where('user_id','$userId')->count();
+            $userId=Auth::id();
+            return Cart::where('user_id',$userId)->count();
     }
     public static function cartList()
     {
-        if(Session::has('user'))
-        {
-            $userId=Session::get('user')->id;
-            $products=DB::table('carts')
-            ->join('products','carts.product_id','=','products.id')
-            ->where('carts.user_id',$userId)
-            ->select('products.*')
-            ->get();
-            return view('/cartlist',['products'=>$products]);
-
-        }
-        else{
-            return redirect('/login');
-        }
+            return view('/product/cartlist');
     }
     public function orderNow(Request $request)
     {
-        $userId=Session::get('user')->id;
-        $products=$request->products;
+        $userId=Auth::id();
+        $products=DB::table('carts')
+        ->join('products','carts.product_id','=','products.id')
+        ->where('carts.user_id',$userId)
+        ->select('products.*')
+        ->get();
+        $total=0;
+        $count=0;
+        foreach($products as $product){
+                $product_price=$product->price*$request->quantity[$count];
+                $quantity=$request->quantity[$count];
+                $total=$total+$product_price;
+                $count=$count+1;    
+        }
+        return view('/product/ordernow',['products'=>$products,'total'=>$total,
+        'product_prices'=>$product_price,'quantities'=>$quantity]);
+        // return $request->quantity;
+    }
+    public function placeOrder(Request $request)
+    { 
+        // return $request->total;
+        $order=new Order([
+            'user_id'=>Auth::id(),
+            'amount'=>$request->total,
+            'status'=>"pending",
+            'ordered_at'=>Carbon::now()
+        ]);
+        $order->save();
+        $userId=Auth::id();
+        $products=DB::table('carts')
+        ->join('products','carts.product_id','=','products.id')
+        ->where('carts.user_id',$userId)
+        ->select('products.*')
+        ->get();
+        $total=0;
         foreach($products as $product){
             $product_price=$product->price*$request->quantity;
             $quantity=$request->quantity;
+            $total=$total+$product_price;
         }
-        $total=$products->sum();
-        return view('/placeorder',['products'=>$products,'total'=>$total,
-        'product_prices'=>$product_price,'quantities'=>$quantity]);
-    }
-    public function placeOrder(Request $request)
-    {
-        $order=new Order([
-            'user_id'=>Session::get('user')->id,
-            'amount'=>$request->total,
-            'status'=>"pending",
-        ]);
-        $order->save();
-        $orderItem=new OrderItem([
-            'order_id'=>Order::first()->id,
-            'product_id'=>$request->product_id,
-            'price'=>,
-            'quantity'=>,
-            'ordered_at'=>
+        foreach($products as $product)
+        {
+            $orderItem=new OrderItem([
+            'order_id'=>Order::orderby('id','desc')->first()->id,
+            'product_id'=>$product->id,
+            'price'=>$product->price,
+            'quantity'=>$request->quantity,
+            'ordered_at'=>Carbon::now()
         ]);
         $orderItem->save();
-        $cart=Cart::where('user_id','=','Session::get('user')->id');
+        }
+        $cart=Cart::where('user_id',Auth::id());
         $cart->delete();
-        return view('home')->with(['msg'=>"Order placed succesfully"]);
+        $this->sendMail();
+        return redirect('product')->with(['msg'=>"Order placed succesfully"]);
+    }
+    public function sendMail()
+    {
+        \Mail::send('product\mail', array(
+        'name' => Auth::user()->name,
+        'email' => Auth::user()->email,
+        'subject' => "Order Confirmation",
+        'form_message' => "This is to inform you that your order is confirmed",
+    ), function($message){
+        $message->from("sridivyapervela357@gmail.com");
+        $message->to(Auth::user()->email, 'Dear customer')->subject("Order Confirmation");
+    });
     }
 }

@@ -8,8 +8,8 @@
                     <div style="font-size: 150%;" class="card-header">{{ $category->name }}
                         @auth
                         @if(auth()->user()->role=='admin')
-                        <a class='btn btn-sm ml-2' href='/edit/{{$category->id}}'>Edit category</a>
-                        <a class='btn btn-sm ml-2' href='/category/destroy/{{$category->id}}'>Delete category</a>
+                        <a class='btn btn-sm btn-danger ml-2' href='/category/{{$category->id}}/edit'>Edit category</a>
+                        <a class='btn btn-sm btn-danger ml-2' href='/category/delete/{{$category->id}}' action="categort.destroy">Delete category</a>
                         @endif
                         @endauth
                     </div>
@@ -24,6 +24,7 @@
                                         @if($product->status=='active')
                                             <li class="list-group-item">    
                                                 &nbsp;<a title="Show Details" href="/product/{{ $product->id }}">{{ $product->name }}</a>
+                                                &nbsp;<p>Product price:{{ $product->price }}</p>
                                             </li> 
                                         @endif                                         
                                         @endforeach

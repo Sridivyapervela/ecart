@@ -21,31 +21,21 @@ class UserSeeder extends Seeder
     {
         User::factory(10)->create()->each(function ($user)
         {
-            $currentOrder=Order::factory()->count(rand(1,5))->create(
+            Order::factory()->count(rand(1,5))->create(
                 ['user_id'=> $user->id,
                 ])
                 ->each(function ($order){
                     $product_id=Product::inRandomOrder()->first()->id;
                     OrderItem::factory()->count(rand(1,3))->create(
                     ['order_id'=>$order->id,
-                    'product_id'=>$product_id])
-                    ->each(function($orderItem){
-                        DB::table('order_item_product')
-                        ->insert(
-                        [
-                        'orderItem_id' => $orderItem->id,
-                        'product_id' => $orderItem->product_id,
-                        'created_at' => Now(),
-                        'updated_at' => Now()
-                        ]);
-                    });
-                    $items=OrderItem::where('order_id',$order->id);
-                    $product_of_price_quantity=$items->price*$items->quantity;
+                    'product_id'=>$product_id]);
+                    $orderId=$order->id;
                     $amount=DB::table('order_items')
-                    ->where('order_id','=','$order->id')
-                    ->sum($product_of_price_quantity);
+                    ->select(DB::raw('sum(order_items.price * order_items.quantity) as total'))
+                    ->where('order_items.order_id',$orderId)
+                    ->first();
                     DB::table('orders')
-                    ->update(['amount'=>$amount]);
+                    ->update(['amount'=>$amount->total]);
                 });  
         });
 }

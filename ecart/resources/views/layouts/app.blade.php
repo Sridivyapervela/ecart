@@ -1,7 +1,8 @@
 <?php
 use App\Http\Controllers\ProductController;
+use Illuminate\Support\Facades\Session;
 $total=0;
-if(Session::has('user')){$total=ProductController::cartItem();}
+if(Auth::user()){$total=ProductController::cartItem();}
 ?>
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -38,7 +39,14 @@ if(Session::has('user')){$total=ProductController::cartItem();}
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
                         <a href='/product' class="btn-sm btn-primary">Products</a>
-                        <a href='/category' class="btn-sm btn-success">Categories</a>
+                        <a href='/category' class="btn-sm btn-success ml-3">Categories</a>
+                        @auth
+                        <a href='/user/{{auth()->user()->id}}' class="btn-sm btn-success ml-3">Profile</a>
+                        @if(auth()->user()->role=='admin')
+                        <a href='/order' class="btn-sm btn-success ml-3">Orders</a>
+                        <a href='/user' class="btn-sm btn-success ml-3">Users</a>
+                        @endif
+                        @endauth
                     </ul>
 
                     <!-- Right Side Of Navbar -->

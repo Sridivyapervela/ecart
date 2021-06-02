@@ -14,9 +14,10 @@
                                 <div class="col-md-9">
                                 <ul class="list-group">
                                     <li class="list-group-item">Order id:{{$order->id}}</li>
-                                    <li class="list-group-item">User:{{$order->user_id}}</li>
+                                    <li class="list-group-item">Userid:{{$order->user_id}}</li>
+                                    <li class="list-group-item">User_email:{{$order->user->email}}</li>
                                     <li class="list-group-item">Order amount:{{$order->amount}}
-                                    <a class="btn btn-sm btn-primary" href="/order/edit/{{$order->id}}">Edit status</a>
+                                    <a class="btn btn-sm btn-primary" href="/order/{{$order->id}}/edit">Edit status</a>
                                     </li>
                                     <li class="list-group-item">Order status:{{$order->status}}</li>
                                     <li class="list-group-item">Ordered at:{{$order->ordered_at}}</li>

@@ -8,13 +8,15 @@
                     <div style="font-size: 150%;" class="card-header">{{ $product->name }}
                         @auth
                         @if(auth()->user()->role=='admin')
-                        <a class='btn btn-sm ml-2' href='/edit/{{$product->id}}'>Edit product</a>
-                        <a class='btn btn-sm ml-2' href='/product/destroy/{{$product->id}}'>Delete product</a>
+                        <a class='btn btn-sm btn-danger ml-2' href='/product/{{$product->id}}/edit'>Edit product</a>
+                        <a class='btn btn-sm btn-danger ml-2' href='/product/delete/{{$product->id}}'>Delete product</a>
                         @endif
                         @endauth
                     </div>
                     <div class="card-body">
                         <div class="row">
+                        <form action="/add_to_cart" method="POST">
+                         @csrf
                             <div class="col-md-9">
                             @if(file_exists('img/products/' . $product->id . '_large.jpg'))
                                     <a href="/img/products/{{$product->id}}_large.jpg" data-lightbox="img/products/{{$product->id}}_large.jpg" data-title="{{ $product->name }}">
@@ -23,25 +25,25 @@
                                     <i class="fa fa-search-plus"></i> Click image to enlarge
                             @endif
                             </div>
-                            <div class="col-md-9">    
+                            <div class="col-md-12">    
                                 <h5>{{ $product->name}}</h5>
-                                <ul class="list-group">
-                                    <li class="list-group-item">Product_code: {{ $product->code}}</li>
-                                    <li class="list-group-item">Product price: {{ $product->price}}</li>
+                                    Product_code: {{ $product->code}}
+                                    <br>
+                                    Product price: {{ $product->price}}
+                                    <br>
                                     @auth
                                     @if(auth()->user()->role=='admin')
-                                    <li class="list-group-item">Product status:{{ $product->status}}</li>
-                                    <li class="list-group-item">Available stock:{{ $product->available_stock}}</li>
+                                    Product status:{{ $product->status}}
+                                    <br>
+                                    Available stock:{{ $product->available_stock}}
+                                    <br>
                                     @endif
                                     @endauth
-                                    <li class="list-group-item">Category_id: {{ $product->category_id}}</li>
-                                </ul>
+                                    Category_id: {{ $product->category_id}}
                                 <br>
-                                <form action="/add_to_cart" method="POST">
-                                    @csrf
                                     <input type="hidden" name="product_id" value="{{$product->id}}">
-                                    <input class="btn btn-success mt-4 float-right" type="submit" value="Add to cart">
-                                </form>
+                                    <input class="btn btn-success mt-4 float-left" type="submit" value="Add to cart">
+                        </form>
                             </div>
                         </div>
                     </div>
