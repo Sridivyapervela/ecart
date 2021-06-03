@@ -20,7 +20,7 @@ class Product extends Model
         return $this->belongsTo('App\Models\Category');
     }
 
-    public function order_items(){
-        return $this->belongsToMany('App\Models\OrderItem');
+    public function order_item(){
+        return $this->belongsTo('App\Models\OrderItem');
     }
 }

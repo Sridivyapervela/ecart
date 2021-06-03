@@ -16,32 +16,32 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-9">
-                                
-                                <h5>Products in {{ $category->name}}</h5>
+                            @if($category->products->count() > 0)
+                            <h5>Products in {{ $category->name}}</h5>
                                 <ul class="list-group">
-                                    @if($category->products->count() > 0)
                                         @foreach($category->products as $product)
                                         @if($product->status=='active')
-                                            <li class="list-group-item">    
+                                            <li class="list-group-item">
+                                                @if(file_exists('img/products/' . $product->id . '_thumb.jpg'))
+                                                <a href="/img/products/{{$product->id}}_thumb.jpg" data-lightbox="img/products/{{$product->id}}_thumb.jpg" data-title="{{ $product->name }}">
+                                                <img class="img-fluid" src="/img/products/{{$product->id}}_thumb.jpg" alt="">
+                                                </a>
+                                                @endif    
                                                 &nbsp;<a title="Show Details" href="/product/{{ $product->id }}">{{ $product->name }}</a>
                                                 &nbsp;<p>Product price:{{ $product->price }}</p>
                                             </li> 
                                         @endif                                         
                                         @endforeach
-                                    @else
-                                    <p>
-                                        {{ $product->name }} has no products yet.
-                                    </p>
-                                    @endif
                                 </ul>
+                            @else
+                            <p>
+                            {{ $category->name }} has no products yet.
+                            </p>
+                            @endif
                             </div>
                         </div>
-
-
                     </div>
-
                 </div>
-
                 <div class="mt-4">
                     <a class="btn btn-primary btn-sm" href="{{ URL::previous() }}"><i class="fas fa-arrow-circle-up"></i> Back to previous</a>
                 </div>

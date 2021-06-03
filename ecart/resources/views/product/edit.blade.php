@@ -36,13 +36,13 @@
 
                             <div class="form-group">
                             <label for="status">{{ __('Product status  ') }}</label>
-                            <input id="status" class="form-control @error('status') is-invalid @enderror" name="status" value="{{ old('status')?? $product->status }}" required autocomplete="status">
+                            <input id="status" placeholder="active/inactive" class="form-control @error('status') is-invalid @enderror" name="status" value="{{ old('status')?? $product->status }}" required autocomplete="status">
                             <small class="form-text text-danger">{!! $errors->first('status') !!}</small>
                             </div>
 
                             <div class="form-group">
                             <label for="category_id" >{{ __('Category_id ') }}</label>
-                            <input id="category_id" type="number" class="form-control @error('category_id') is-invalid @enderror" name="category_id" value="{{ old('category_id')?? $product->category_id }}" required autocomplete="category_id">
+                            <input id="category_id" placeholder="select existing category_id" type="number" class="form-control @error('category_id') is-invalid @enderror" name="category_id" value="{{ old('category_id')?? $product->category_id }}" required autocomplete="category_id">
                             <small class="form-text text-danger">{!! $errors->first('category_id') !!}</small>
                             </div>
                             <div class="form-group">

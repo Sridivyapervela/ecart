@@ -6,7 +6,7 @@
                 <div class="card">
                     <div class="card-header">Edit Category</div>
                     <div class="card-body">
-                        <form autocomplete="off" action="/category/{{$category->id}}" method="post" enctype="multipart/form-data">
+                        <form autocomplete="off" action="/category/{{$category->id}}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             <div class="form-group">

@@ -12,8 +12,8 @@ class OrderItem extends Model
         return $this->belongsTo('App\Models\Order');
     }
 
-    public function products(){
-        return $this->belongsToMany('App\Models\Product');
+    public function product(){
+        return $this->hasOne('App\Models\Product');
     }
 
     protected $fillable = [

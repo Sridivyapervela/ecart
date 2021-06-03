@@ -16,7 +16,7 @@
                             </div>
             
                             <div class="form-group">
-                            <label for="code" class="col-md-4 col-form-label text-md-right">{{ __('Category Code') }}</label>
+                            <label for="code">{{ __('Category Code') }}</label>
                             <input id="code" type="number" class="form-control @error('code') is-invalid @enderror" name="code" value="{{ old('code') }}" required autocomplete="code">
                             <small class="form-text text-danger">{!! $errors->first('code') !!}</small>
                             </div>

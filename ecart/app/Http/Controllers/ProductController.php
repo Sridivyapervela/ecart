@@ -14,13 +14,14 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Mail;
+use Illuminate\Validation\Rule;
 
 class ProductController extends Controller
 {
     public function __construct()
     {
+        // $this->middleware('admin', ['only' => ['create', 'store', 'edit', 'delete']]);
         $this->middleware('auth')->except(['show','index']);
-        $this->middleware('admin')->except(['show','index','addToCart','cartItem','cartList','orderNow','placeOrder']);
     }
     /**
      * Display a listing of the resource.
@@ -51,20 +52,22 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        $category_ids=Category::where('id' ,'>' ,0)->pluck('id')->toArray();
         $request->validate(['name'=>'required',
             'code'=> 'required',
             'price'=> 'required',
-            'status'=> 'required',
+            'status'=>['required',
+            Rule::in(['active', 'inactive']),
+            ],
             'available_stock'=> 'required',
-            'category_id'=>'required',
+            'category_id'=>['required',
+            Rule::in($category_ids),
+            ],
             'image' => 'mimes:jpeg,jpg,bmp,png,gif'
             ]);
-        $status=['active','inactive'];
-        $categories=Category::all();
-        $category_ids=$categories->id;
-        if(in_array($request->status,$status)){
-            if(in_array($request->category_id,$category_ids))
-            {
+        // if(in_array($request->status,$status)){
+        //     if(in_array($request->category_id,$category_ids))
+        //     {
                 $product=new product([
                     'name'=>$request['name'],
                     'code'=>$request->code,
@@ -76,23 +79,23 @@ class ProductController extends Controller
                 ]);
                 $product->save();
                 if ($request->image) {
-                    $this->saveImages($request->image, $prodcut->id);
+                    $this->saveImages($request->image, $product->id);
                 }
                 return $this->index()->with([
                     'mes_suc' => 'product '. $product->name .' is added succesfully'
                 ]);  
-            }
-            else{
-                return $this->create()->with([
-                    'mes_suc' => 'Please enter a valid Categoryid'
-                ]); 
-            }
-        }
-        else{
-            return $this->create()->with([
-                'mes_suc' => 'Please choose a valid status:active or inactive'
-            ]); 
-        }
+        //     }
+        //     else{
+        //         return $this->create()->with([
+        //             'mes_suc' => 'Please enter a valid Categoryid'
+        //         ]); 
+        //     }
+        // }
+        // else{
+        //     return $this->create()->with([
+        //         'mes_suc' => 'Please choose a valid status:active or inactive'
+        //     ]); 
+        // }
         
     }
 
@@ -137,19 +140,19 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        $request->validate(['name'=>'required',
-        'code'=> 'required',
-        'price'=> 'required',
-        'status'=> 'required',
-        'available_stock'=> 'required',
-        'category_id'=>'required',
-        'image' => 'mimes:jpeg,jpg,bmp,png,gif'
-        ]);
-        $status=['active','inactive'];
         $category_ids=Category::where('id' ,'>' ,0)->pluck('id')->toArray();
-        if(in_array($request->status,$status)){
-            if(in_array($request->category_id,$category_ids))
-            {
+        $request->validate(['name'=>'required',
+            'code'=> 'required',
+            'price'=> 'required',
+            'status'=>['required',
+            Rule::in(['active', 'inactive']),
+            ],
+            'available_stock'=> 'required',
+            'category_id'=>['required',
+            Rule::in($category_ids),
+            ],
+            'image' => 'mimes:jpeg,jpg,bmp,png,gif'
+            ]);
             $product->update([
             'name'=>$request['name'],
             'code'=>$request->code,
@@ -164,18 +167,6 @@ class ProductController extends Controller
             return redirect('/product')->with([
                     'mes_suc' => 'Succesfully updated!'
                 ]);  
-            }
-            else{
-                return redirect('/product/create')->with([
-                    'mes_suc' => 'Please enter a valid Categoryid'
-                ]); 
-            }
-        }
-        else{
-            return redirect('/product/create')->with([
-                'mes_suc' => 'Please choose a valid status:active or inactive'
-            ]); 
-        }
     }
 
     /**
@@ -186,7 +177,7 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        // abort_unless($user->role='admin',403);
+        abort_unless(auth()->user()->role='admin',403);
         $old=$product->name;
         $product->forceDelete();
         return redirect('product')->with([

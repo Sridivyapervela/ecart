@@ -4,15 +4,14 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\User;
 use App\Models\Product;
-
-
+use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('admin')->except(['show','index']);
+        // $this->middleware('admin')->except(['show','index']);
         $this->middleware('auth')->except(['show','index']);
     }
     /**
@@ -22,7 +21,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories=Category::orderBy('created_at','DESC')->paginate(10);
+        $categories=Category::orderBy('created_at','DESC')->paginate(25);
         return view('/category/index')->with(['categories'=>$categories]);
     }
 
@@ -44,9 +43,11 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        $category_codes=Category::where('id' ,'>' ,0)->pluck('code')->toArray();
         $request->validate(['name'=>'required',
-            'code'=> 'required',
-            ]);
+        'code' =>['required',
+        Rule::notIn($category_codes)],
+        ]);
         $category=new category([
             'name'=>$request['name'],
             'code'=>$request->code,
@@ -95,15 +96,17 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
+        $category_codes=Category::where('id' ,'>' ,0)->pluck('code')->toArray();
         $request->validate(['name'=>'required',
-        'code' => 'required',
+        'code' =>['required',
+        Rule::notIn($category_codes)],
         ]);
     
         $category->update([
         'name'=>$request['name'],
         'code'=>$request->code
     ]);
-    return redirect('/index'); 
+    return redirect('/category'); 
     }
 
     /**
@@ -117,6 +120,6 @@ class CategoryController extends Controller
         abort_unless($category->role='admin',403);
         $old=$category->name;
         $category->delete();
-        return redirect('/index');
+        return redirect('/category');
     }
 }

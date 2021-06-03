@@ -22,7 +22,9 @@ $products=DB::table('carts')
                             <div class="col-md-12">
                             <form action="/ordernow" method="POST">
                             @csrf
+                            @if($products->count()>0)
                             <input class="btn btn-primary mt-4" type="submit" value="Order now">
+                            @endif
                             <br>
                             @foreach($products as $product)
                                 <div class="col-md-6">
@@ -47,7 +49,9 @@ $products=DB::table('carts')
                                 <br>
                             @endforeach
                                 <input type="hidden" name="products[]" value="{{ $products }}">
+                                @if($products->count()>0)
                                 <input class="btn btn-primary mt-4" type="submit" value="Order now">
+                                @endif
                             </form>
                         </div>
                             </div>
@@ -55,7 +59,7 @@ $products=DB::table('carts')
                     </div>
                 </div>
                 <div class="mt-4">
-                    <a class="btn btn-primary btn-sm" href="{{ URL::previous() }}"><i class="fas fa-arrow-circle-up"></i> Back to previous</a>
+                    <a class="btn btn-primary btn-sm " href="{{ URL::previous() }}"><i class="fas fa-arrow-circle-up"></i> Back to previous</a>
                 </div>
             </div>
         </div>

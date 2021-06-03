@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class OrderController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('admin')->except(['show','index']);
+        // $this->middleware('admin')->except(['show','index']);
         $this->middleware('auth')->except(['show','index']);
     }
     /**
@@ -52,7 +53,9 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        //
+         return view('/order/show')->with(
+            ['order' => $order
+            ]);
     }
 
     /**
@@ -78,22 +81,24 @@ class OrderController extends Controller
     public function update(Request $request, Order $order)
     {
         $request->validate([
-        'status'=> 'required',
+        'status'=>['required',
+        Rule::in(['success', 'failed']),
+        ],
         ]);
-        $status=['success','failed'];
-        if(in_array($request->status,$status)){
+        // $status=['success','failed'];
+        // if(in_array($request->status,$status)){
             $order->update([
             'status'=>$request->status,
             ]);
             return redirect('/order')->with([
                     'mes_suc' => 'Succesfully updated!'
                 ]);   
-            }
-        else{
-            return redirect('/order')->with([
-                'mes_suc' => 'Please choose a valid status:Success or failed'
-            ]); 
-        }
+        //     }
+        // else{
+        //     return redirect('/order')->with([
+        //         'mes_suc' => 'Please choose a valid status:Success or failed'
+        //     ]); 
+        // }
     }
 
     /**

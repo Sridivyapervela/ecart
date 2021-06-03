@@ -6,6 +6,11 @@
             <div class="col-md-11">
                 <div class="card">
                     <div style="font-size: 150%;" class="card-header">Categories
+                    @auth
+                        @if(auth()->user()->role=='admin')
+                        <a class='btn btn-sm btn-success ml-2' href='/category/create'>Create Category</a>
+                        @endif
+                    @endauth
                     </div>
                     <div class="card-body">
                         <div class="row">

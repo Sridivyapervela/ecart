@@ -9,8 +9,8 @@ class UserController extends Controller
 {  
     public function __construct()
     {
-       $this->middleware('admin')->except(['show','index']);
-       $this->middleware('auth');
+    //    $this->middleware('admin')->except(['show','index']);
+    //    $this->middleware('auth');
     }
     /**
      * Display a listing of the resource.
@@ -19,7 +19,7 @@ class UserController extends Controller
      */
     public function index()
     { 
-        $users=User::orderBy('created_at','DESC')->paginate(10);
+        $users=User::orderBy('created_at','DESC')->paginate(25);
         return view('/user/index')->with(['users'=>$users]);   
      }
 
@@ -50,7 +50,7 @@ class UserController extends Controller
             'user_id'=>auth()->id(),
         ]);
         $user->save();
-        return $this->index()->with([
+        return redirect('/product')->with([
             'mes_suc' => 'User '. $user->name .' is added succesfully'
         ]);  
     }
@@ -76,9 +76,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('/user/edit')->with(
-            ['user' => $user
-            ]);  
+        //
     }
 
     /**
@@ -90,15 +88,7 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $request->validate(['name'=>'required',
-        'email' => 'required',
-        ]);
-    
-        $user->update([
-        'name'=>$request['name'],
-        'email'=>$request->email
-    ]);
-    return redirect('/home'); 
+        //
     }
 
     /**

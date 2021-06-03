@@ -9,8 +9,7 @@
                         <b>{{ $user->role }}</b>
                         @auth
                         @if(auth()->user()->role=='admin')
-                        <a class='btn btn-sm ml-2' href='/user/{{$user->id}}/edit'>Edit User</a>
-                        <a class='btn btn-sm ml-2' href='/user/delete/{{$user->id}}'>Delete User</a>
+                        <a class='btn btn-sm btn-danger ml-2' href='/user/delete/{{$user->id}}'>Delete User</a>
                         @endif
                         @endauth
                     </div>
@@ -19,24 +18,23 @@
                             <div class="col-md-9">
                                 <ul class="list-group">
                                     @auth
-                                        @if(auth()->user()->orders->count() > 0)
-                                        @foreach(auth()->user()->orders as $order)
-                                            <li class="list-group-item">
-                                                
-                                                &nbsp;<a title="Show Details" href="/order/{{ $order->id }}">{{ $order->ordered_at }} {{$order->status}} </a>
+                                        @if($user->orders->count() > 0)
+                                        @foreach($user->orders as $order)
+                                            <li class="list-group-item">                                                
+                                                &nbsp;<a title="Show Details" href="/order/{{ $order->id }}">Ordered at:{{ $order->ordered_at }} </a>
+                                                <br>Order status:{{$order->status}} 
                                                 <br>
-                                                @foreach($order->orderItems as $orderItem and $orderItem->products as $orderItem_product)
-                                                    <a href="/order/orderItem/{{ $orderItem->id }}"><span>{{ $orderItem->id }}</span></a>
+                                                @foreach($order->order_items as $orderItem)
+                                                    Order item id:<span class="ml-lg-2">{{ $orderItem->id }}</span>
+                                                    Order item product id:<a href="/product/{{ $orderItem->product_id }}"><span>{{ $orderItem->product_id }}</span></a>
                                                     <br>
-                                                    <a href="/order/orderItem/product/{{ $orderItem_product->id }}"><span>{{ $orderItem_product->name }}</span></a>
-                                                    
                                                 @endforeach
                                             </li>
                                         @endforeach
                                 </ul>
                                 @else
                                     <p>
-                                        {{auth()->user()->name }} has not placeded any orders yet.
+                                        {{$user->first_name }} {$user->last_name}} has not placeded any orders yet.
                                     </p>
                                 @endif
                                 @endauth

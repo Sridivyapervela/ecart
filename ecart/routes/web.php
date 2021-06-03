@@ -21,7 +21,7 @@ Route::get('/', function () {
         return redirect('home');
     }
     else{
-        return view('\auth\login');
+        return redirect('login');
     }
 });
 
@@ -36,11 +36,14 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::post('/product', [ProductController::class,'store']);
 Route::post('/category', [CategoryController::class,'store']);
-Route::post('/add_to_cart', [ProductController::class,'addToCart']);
+Route::post('/add_to_cart', [ProductController::class,'addToCart'])->middleware('auth');
 Route::get('/cartlist', [ProductController::class,'cartList']);
 Route::post('/ordernow', [ProductController::class,'orderNow']);
 Route::post('/placeorder', [ProductController::class,'placeOrder']);
-Route::get('/product/delete/{id}',[ProductController::class,'destroy']);
-Route::get('/user/delete/{id}',[UserController::class,'destroy']);
-Route::get('/category/delete/{id}',[CategoryController::class,'destroy']);
+Route::get('/product/delete/{product_id}',[ProductController::class,'destroy']);
+Route::get('/user/delete/{user_id}',[UserController::class,'destroy']);
+Route::get('/category/delete/{category_id}',[CategoryController::class,'destroy']);
+
+Route::put('/product/{product_id}/edit', [ProductController::class,'edit'])->middleware('admin');
+
 

@@ -43,13 +43,13 @@
                                 <br>
                                     <input type="hidden" name="product_id" value="{{$product->id}}">
                                     <input class="btn btn-success mt-4 float-left" type="submit" value="Add to cart">
-                        </form>
                             </div>
+                        </form>
                         </div>
                     </div>
                 </div>
                 <div class="mt-4">
-                    <a class="btn btn-primary btn-sm" href="{{ URL::previous() }}"><i class="fas fa-arrow-circle-up"></i> Back to previous</a>
+                    <a class="btn btn-primary btn-sm" href="/product"><i class="fas fa-arrow-circle-up"></i> Back to products</a>
                 </div>
             </div>
         </div>
