@@ -6,7 +6,7 @@
                 <div class="card">
                     <div class="card-header">Edit Category</div>
                     <div class="card-body">
-                        <form autocomplete="off" action="/category/{{$category->id}}" method="POST" enctype="multipart/form-data">
+                        <form autocomplete="off" action="/categories/{{$category->id}}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             <div class="form-group">
@@ -21,7 +21,7 @@
                             </div>
                             <input class="btn btn-primary mt-4" type="submit" value="Save category">
                         </form>
-                        <a class="btn btn-primary float-right" href="/category"><i class="fas fa-arrow-circle-up"></i> Back</a>
+                        <a class="btn btn-primary float-right" href="/categories"><i class="fas fa-arrow-circle-up"></i> Back</a>
                     </div>
                 </div>
             </div>

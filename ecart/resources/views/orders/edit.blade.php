@@ -1,7 +1,7 @@
 <?php
-$user_id=$order->user_id;
-$amount=$order->amount;
-$ordered_at=$order->ordered_at;
+$user_id = $order->user_id;
+$amount = $order->amount;
+$ordered_at = $order->ordered_at;
 ?>
 @extends('layouts.app')
 
@@ -12,7 +12,7 @@ $ordered_at=$order->ordered_at;
                 <div class="card">
                     <div class="card-header">Edit order</div>
                     <div class="card-body">
-                        <form autocomplete="off" action="/order/{{$order->id}}" method="post" enctype="multipart/form-data">
+                        <form autocomplete="off" action="/orders/{{$order->id}}" method="post" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             <div class="form-group">
@@ -30,7 +30,7 @@ $ordered_at=$order->ordered_at;
                             </div>
                             <input class="btn btn-primary mt-4" type="submit" value="Save order">
                         </form>
-                        <a class="btn btn-primary float-right" href="/order"><i class="fas fa-arrow-circle-up"></i> Back</a>
+                        <a class="btn btn-primary float-right" href="/orders"><i class="fas fa-arrow-circle-up"></i> Back</a>
                     </div>
                 </div>
             </div>

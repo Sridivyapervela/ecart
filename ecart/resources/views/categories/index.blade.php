@@ -8,7 +8,7 @@
                     <div style="font-size: 150%;" class="card-header">Categories
                     @auth
                         @if(auth()->user()->role=='admin')
-                        <a class='btn btn-sm btn-success ml-2' href='/category/create'>Create Category</a>
+                        <a class='btn btn-sm btn-success ml-2' href='/categories/create'>Create Category</a>
                         @endif
                     @endauth
                     </div>
@@ -18,7 +18,7 @@
                                 <ul class="list-group">
                                         @foreach($categories as $category)
                                             <li class="list-group-item">
-                                                <a title="Show Products" href="/category/{{ $category->id }}">{{ $category->name }}</a>
+                                                <a title="Show Products" href="/categories/{{ $category->id }}">{{ $category->name }}</a>
                                             </li>
                                         @endforeach
                                 </ul>

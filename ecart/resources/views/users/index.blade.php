@@ -8,7 +8,7 @@
                     Hello Admin
                     @auth
                         @if(auth()->user()->role=='admin')
-                        <a class='btn btn-sm btn-success ml-2' href='/user/create'>Create User</a>
+                        <a class='btn btn-sm btn-success ml-2' href='/users/create'>Create User</a>
                         @endif
                     @endauth
                     </div>
@@ -17,10 +17,10 @@
                          @foreach($users as $user)
                                 <ul class="list-group col-md-11">
                                 <li class="list-group-item">
-                                <a class='ml-2' href='/user/{{$user->id}}'>{{ $user->first_name}} {{ $user->last_name}}</p></a>
+                                <a class='ml-2' href='/users/{{$user->id}}'>{{ $user->first_name}} {{ $user->last_name}}</p></a>
                                 <p class="ml-2">{{$user->email}}</p>
                                 <p class="ml-2"><b>{{ $user->role }}</b></p>
-                                <a class='btn btn-sm btn-danger ml-2' href='/user/delete/{{$user->id}}'>Delete User</a>
+                                <a class='btn btn-sm btn-danger ml-2' href='/users/delete/{{$user->id}}'>Delete User</a>
                                 </li>
                                 </ul> 
                         @endforeach  

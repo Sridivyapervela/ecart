@@ -1,8 +1,10 @@
 <?php
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Session;
-$total=0;
-if(Auth::user()){$total=ProductController::cartItem();}
+$total = 0;
+if (Auth::user()) {
+  $total = ProductController::cartItem();
+}
 ?>
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -38,13 +40,13 @@ if(Auth::user()){$total=ProductController::cartItem();}
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-                        <a href='/product' class="btn-sm btn-primary">Products</a>
-                        <a href='/category' class="btn-sm btn-success ml-3">Categories</a>
+                        <a href='/products' class="btn-sm btn-primary">Products</a>
+                        <a href='/categories' class="btn-sm btn-success ml-3">Categories</a>
                         @auth
-                        <a href='/user/{{auth()->user()->id}}' class="btn-sm btn-success ml-3">Profile</a>
+                        <a href='/users/{{auth()->user()->id}}' class="btn-sm btn-success ml-3">Profile</a>
                         @if(auth()->user()->role=='admin')
-                        <a href='/order' class="btn-sm btn-success ml-3">Orders</a>
-                        <a href='/user' class="btn-sm btn-success ml-3">Users</a>
+                        <a href='/orders' class="btn-sm btn-success ml-3">Orders</a>
+                        <a href='/users' class="btn-sm btn-success ml-3">Users</a>
                         @endif
                         @endauth
                     </ul>

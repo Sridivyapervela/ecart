@@ -9,7 +9,7 @@
                         <b>{{ $user->role }}</b>
                         @auth
                         @if(auth()->user()->role=='admin')
-                        <a class='btn btn-sm btn-danger ml-2' href='/user/delete/{{$user->id}}'>Delete User</a>
+                        <a class='btn btn-sm btn-danger ml-2' href='/users/delete/{{$user->id}}'>Delete User</a>
                         @endif
                         @endauth
                     </div>
@@ -21,12 +21,12 @@
                                         @if($user->orders->count() > 0)
                                         @foreach($user->orders as $order)
                                             <li class="list-group-item">                                                
-                                                &nbsp;<a title="Show Details" href="/order/{{ $order->id }}">Ordered at:{{ $order->ordered_at }} </a>
+                                                &nbsp;<a title="Show Details" href="/orders/{{ $order->id }}">Ordered at:{{ $order->ordered_at }} </a>
                                                 <br>Order status:{{$order->status}} 
                                                 <br>
                                                 @foreach($order->order_items as $orderItem)
                                                     Order item id:<span class="ml-lg-2">{{ $orderItem->id }}</span>
-                                                    Order item product id:<a href="/product/{{ $orderItem->product_id }}"><span>{{ $orderItem->product_id }}</span></a>
+                                                    Order item product id:<a href="/products/{{ $orderItem->product_id }}"><span>{{ $orderItem->product_id }}</span></a>
                                                     <br>
                                                 @endforeach
                                             </li>
@@ -34,7 +34,7 @@
                                 </ul>
                                 @else
                                     <p>
-                                        {{$user->first_name }} {$user->last_name}} has not placeded any orders yet.
+                                        {{$user->first_name }} {{$user->last_name}} has not placeded any orders yet.
                                     </p>
                                 @endif
                                 @endauth

@@ -70,7 +70,7 @@
                         </div>
                         <br>
                         <div class="col-md-6 offset-md-4">
-                        <a href="{{ url('/home') }}">Skip Sign in?</a>
+                        <a href="{{ url('/') }}">Skip Sign in?</a>
                         </div>
                     </form>
                 </div>

@@ -7,7 +7,7 @@
                 <div class="card">
                     <div class="card-header">Create New Category</div>
                     <div class="card-body">
-                        <form autocomplete="off" action="/category" method="POST" enctype="multipart/form-data">
+                        <form autocomplete="off" action="/categories" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
                                 <label for="name">Name</label>
@@ -23,7 +23,7 @@
             
                             <input class="btn btn-primary mt-4" type="submit" value="Save category">
                         </form>
-                        <a class="btn btn-primary float-right" href="/category"><i class="fas fa-arrow-circle-up"></i> Back</a>
+                        <a class="btn btn-primary float-right" href="/categories"><i class="fas fa-arrow-circle-up"></i> Back</a>
                     </div>
                 </div>
             </div>

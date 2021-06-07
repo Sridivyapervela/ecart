@@ -17,7 +17,7 @@
                                     <li class="list-group-item">Order amount:{{$order->amount}}
                                     </li>
                                     <li class="list-group-item">Order status:{{$order->status}}
-                                    <a class="btn btn-sm btn-primary" href="/order/{{$order->id}}/edit">Edit status</a></li>
+                                    <a class="btn btn-sm btn-primary" href="/orders/{{$order->id}}/edit">Edit status</a></li>
                                     <li class="list-group-item">Ordered at:{{$order->ordered_at}}</li>
                                 </ul>
                         </div>
@@ -25,7 +25,7 @@
                     </div>
                 </div>
                 <div class="mt-4">
-                    <a class="btn btn-primary btn-sm" href="/order"><i class="fas fa-arrow-circle-up"></i> Back to orders</a>
+                    <a class="btn btn-primary btn-sm" href="/orders"><i class="fas fa-arrow-circle-up"></i> Back to orders</a>
                 </div>
             </div>
         </div>

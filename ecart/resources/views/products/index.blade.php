@@ -8,7 +8,7 @@
                     <div style="font-size: 150%;" class="card-header">Products
                     @auth
                         @if(auth()->user()->role=='admin')
-                        <a class='btn btn-sm btn-success ml-2' href='/product/create'>Create product</a>
+                        <a class='btn btn-sm btn-success ml-2' href='/products/create'>Create product</a>
                         @endif
                     @endauth
                     </div>
@@ -25,9 +25,13 @@
                                                 <img class="img-fluid" src="/img/products/{{$product->id}}_thumb.jpg" alt="">
                                                 </a>
                                                 @endif
-                                                <a title="Product details" href="/product/{{ $product->id }}">{{ $product->name }}</a>
+                                                <a title="Product details" href="/products/{{ $product->id }}">{{ $product->name }}</a>
                                                 <form action="/add_to_cart" method="POST">
                                                 @csrf
+                                                <div class="col-xs-2">
+                                                <label for="quantity" class=" text-md-right">{{ __('Quantity') }}</label>
+                                                <input name="product[{{$product->id}}][{{$product->id}}][quantity][{{$product->price}}]" type="number" min='1' class="form-control @error('quantity') is-invalid @enderror" required>
+                                                </div>
                                                 <input type="hidden" name="product_id" value="{{$product->id}}">
                                                 <input class="btn btn-success mt-4 float-right" type="submit" value="Add to cart">
                                                 </form>

@@ -7,7 +7,7 @@
                 <div class="card">
                     <div class="card-header">Create New user</div>
                     <div class="card-body">
-                        <form autocomplete="off" action="/user" method="POST" enctype="multipart/form-data">
+                        <form autocomplete="off" action="/users" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
                                 <label for="first_name">First Name</label>
@@ -35,13 +35,13 @@
 
                             <div class="form-group">
                             <label for="password-confirm">{{ __('Password-confirmation') }}</label>
-                            <input id="password-confirm"  type="password" class="form-control @error('password-confirm') is-invalid @enderror" name="password-confirmation" value="{{ old('password-confirm') }}" required autocomplete="password-confirm">
+                            <input id="password-confirm"  type="password" class="form-control @error('password-confirm') is-invalid @enderror" name="password-confirm" value="{{ old('password-confirm') }}" required autocomplete="password-confirm">
                             <small class="form-text text-danger">{!! $errors->first('password-confirm') !!}</small>
                             </div>
             
                             <input class="btn btn-primary mt-4" type="submit" value="Save user">
                         </form>
-                        <a class="btn btn-primary float-right" href="/user"><i class="fas fa-arrow-circle-up"></i> Back</a>
+                        <a class="btn btn-primary float-right" href="/users"><i class="fas fa-arrow-circle-up"></i> Back</a>
                     </div>
                 </div>
             </div>

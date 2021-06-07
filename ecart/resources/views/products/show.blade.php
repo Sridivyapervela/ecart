@@ -8,8 +8,8 @@
                     <div style="font-size: 150%;" class="card-header">{{ $product->name }}
                         @auth
                         @if(auth()->user()->role=='admin')
-                        <a class='btn btn-sm btn-danger ml-2' href='/product/{{$product->id}}/edit'>Edit product</a>
-                        <a class='btn btn-sm btn-danger ml-2' href='/product/delete/{{$product->id}}'>Delete product</a>
+                        <a class='btn btn-sm btn-danger ml-2' href='/products/{{$product->id}}/edit'>Edit product</a>
+                        <a class='btn btn-sm btn-danger ml-2' href='/products/delete/{{$product->id}}'>Delete product</a>
                         @endif
                         @endauth
                     </div>
@@ -49,7 +49,7 @@
                     </div>
                 </div>
                 <div class="mt-4">
-                    <a class="btn btn-primary btn-sm" href="/product"><i class="fas fa-arrow-circle-up"></i> Back to products</a>
+                    <a class="btn btn-primary btn-sm" href="/products"><i class="fas fa-arrow-circle-up"></i> Back to products</a>
                 </div>
             </div>
         </div>
