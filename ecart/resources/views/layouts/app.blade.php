@@ -1,9 +1,9 @@
 <?php
-use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Session;
 $total = 0;
 if (Auth::user()) {
-  $total = ProductController::cartItem();
+  $total = CartController::cartItem();
 }
 ?>
 <!doctype html>

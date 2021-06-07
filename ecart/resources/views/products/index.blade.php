@@ -26,7 +26,7 @@
                                                 </a>
                                                 @endif
                                                 <a title="Product details" href="/products/{{ $product->id }}">{{ $product->name }}</a>
-                                                <form action="/add_to_cart" method="POST">
+                                                <form action="/carts" method="POST">
                                                 @csrf
                                                 <div class="col-xs-2">
                                                 <label for="quantity" class=" text-md-right">{{ __('Quantity') }}</label>

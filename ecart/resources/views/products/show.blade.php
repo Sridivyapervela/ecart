@@ -15,7 +15,7 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                        <form action="/add_to_cart" method="POST">
+                        <form action="/carts" method="POST">
                          @csrf
                             <div class="col-md-9">
                             @if(file_exists('img/products/' . $product->id . '_large.jpg'))
@@ -41,8 +41,15 @@
                                     @endauth
                                     Category_id: {{ $product->category_id}}
                                 <br>
-                                    <input type="hidden" name="product_id" value="{{$product->id}}">
-                                    <input class="btn btn-success mt-4 float-left" type="submit" value="Add to cart">
+                                    <form action="/carts" method="POST">
+                                                @csrf
+                                                <div class="col-xs-2">
+                                                <label for="quantity" class=" text-md-right">{{ __('Quantity') }}</label>
+                                                <input name="quantity" type="number" min='1' class="form-control @error('quantity') is-invalid @enderror" required>
+                                                </div>
+                                                <input type="hidden" name="product_id" value="{{$product->id}}">
+                                                <input class="btn btn-success mt-4 float-right" type="submit" value="Add to cart">
+                                                </form>
                             </div>
                         </form>
                         </div>
