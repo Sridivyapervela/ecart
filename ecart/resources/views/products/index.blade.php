@@ -30,7 +30,7 @@
                                                 @csrf
                                                 <div class="col-xs-2">
                                                 <label for="quantity" class=" text-md-right">{{ __('Quantity') }}</label>
-                                                <input name="product[{{$product->id}}][{{$product->id}}][quantity][{{$product->price}}]" type="number" min='1' class="form-control @error('quantity') is-invalid @enderror" required>
+                                                <input name="quantity" type="number" min='1' class="form-control @error('quantity') is-invalid @enderror" required>
                                                 </div>
                                                 <input type="hidden" name="product_id" value="{{$product->id}}">
                                                 <input class="btn btn-success mt-4 float-right" type="submit" value="Add to cart">

@@ -28,7 +28,7 @@ Route::post("/add_to_cart", [
   "addToCart",
 ])->middleware("auth");
 Route::get("/cartlist", [ProductController::class, "cartList"]);
-Route::post("/ordernow", [ProductController::class, "orderNow"]);
+Route::get("/ordernow", [ProductController::class, "orderNow"]);
 Route::post("/placeorder", [ProductController::class, "placeOrder"]);
 Route::get("/products/delete/{product_id}", [
   ProductController::class,

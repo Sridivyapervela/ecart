@@ -186,8 +186,9 @@ class ProductController extends Controller
     $cart = Cart::firstOrCreate([
       "user_id" => Auth::id(),
       "product_id" => $request->product_id,
+      "quantity" => $request->quantity,
     ]);
-    return view("/products/cartlist");
+    return redirect("/");
   }
   public static function cartItem()
   {
@@ -204,24 +205,20 @@ class ProductController extends Controller
     $products = DB::table("carts")
       ->join("products", "carts.product_id", "=", "products.id")
       ->where("carts.user_id", $userId)
-      ->select("products.*")
       ->get();
     $total = 0;
-    $quantity_list = [];
-    $price_of_product = [];
-    foreach ($request->product as $product) {
-      $price_per_unit = array_keys($product)[0];
-      $quantity = $product[$price_per_unit];
+    $price_list = [];
+    foreach ($products as $product) {
+      $price_per_unit = $product->price;
+      $quantity = $product->quantity;
       $price = $price_per_unit * $quantity;
+      array_push($price_list, $price);
       $total = $total + $price;
-      array_push($quantity_list, $quantity);
-      array_push($price_of_product, $price);
     }
     return view("/products/ordernow", [
       "products" => $products,
       "total" => $total,
-      "product_prices" => $price_of_product,
-      "quantities" => $quantity_list,
+      "product_prices" => $price_list,
     ]);
   }
   public function placeOrder(Request $request)
@@ -237,16 +234,14 @@ class ProductController extends Controller
     $products = DB::table("carts")
       ->join("products", "carts.product_id", "=", "products.id")
       ->where("carts.user_id", $userId)
-      ->select("products.*")
       ->get();
     $count = -1;
     foreach ($products as $product) {
-      $count = $count + 1;
       $orderItem = new OrderItem([
         "order_id" => Order::orderby("id", "desc")->first()->id,
         "product_id" => $product->id,
         "price" => $product->price,
-        "quantity" => $request->quantity[$count],
+        "quantity" => $product->quantity,
         "ordered_at" => Carbon::now(),
       ]);
       $orderItem->save();

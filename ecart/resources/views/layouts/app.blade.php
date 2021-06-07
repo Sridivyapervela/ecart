@@ -85,7 +85,7 @@ if (Auth::user()) {
                             </li>
                         </div>
                         <div class="float-right">
-                            <a class="btn btn-sm btn-success" href="/cartlist">Cart({{$total}})</a>
+                            <a class="btn btn-sm btn-success" href="/ordernow">Cart({{$total}})</a>
                         </div>
                         @endguest
                     </ul>

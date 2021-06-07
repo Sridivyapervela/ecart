@@ -31,14 +31,13 @@ $count = -1; ?>
                                         Unit price:{{ $product->price }}
                                     </li>
                                     <li class="list-group-item">
-                                        Quantity:{{$quantities[$count]}}
+                                        Quantity:{{$product->quantity}}
                                     </li>
                                     <li class="list-group-item">
                                         Price:{{$product_prices[$count]}}
                                     </li>
                                 </ul>
                                 </div>
-                                <input type="hidden" name="quantity[]" value="{{$quantities[$count]}}">
                                 @endforeach
                             <div class="col-md-4 float-right">
                             Total:{{$total}}  
