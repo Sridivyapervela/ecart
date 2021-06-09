@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use App\Http\View\Composers\CartCountComposer;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
-class AppServiceProvider extends ServiceProvider
+class ViewServiceProvider extends ServiceProvider
 {
   /**
    * Register any application services.
@@ -23,6 +25,7 @@ class AppServiceProvider extends ServiceProvider
    */
   public function boot()
   {
-    //
+    // Using class based composers...
+    View::composer("*", CartCountComposer::class);
   }
 }

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin_app')
 
 @section('content')
     <div class="container">
@@ -6,6 +6,7 @@
             <div class="col-md-11">
                 <div class="card">
                     <div style="font-size: 150%;" class="card-header">Categories
+                        <a class='btn btn-sm btn-success ml-2' href='/admin/categories/create'>Create Category</a>
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -13,7 +14,16 @@
                                 <ul class="list-group">
                                         @foreach($categories as $category)
                                             <li class="list-group-item">
-                                                <a title="Show Products" href="/categories/{{ $category->id }}">{{ $category->name }}</a>
+                                                <a title="Show Products" href="/admin/categories/{{ $category->id }}">{{ $category->name }}</a>
+                                                <br>
+                                                <a class='btn btn-sm btn-danger ml-2' href='/admin/categories/{{$category->id}}/edit'>Edit category</a>
+                                                <div class="float-right">
+                                                <form autocomplete="off" action="/admin/categories/{{$category->id}}" method="POST" enctype="multipart/form-data">
+                                                @csrf
+                                                @method('DELETE')
+                                                <input class='btn btn-sm btn-danger' type="submit" value="Delete category">
+                                                </form>
+                                                </div>
                                             </li>
                                         @endforeach
                                 </ul>

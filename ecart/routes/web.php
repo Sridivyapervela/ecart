@@ -24,23 +24,26 @@ Route::get("/", [HomeController::class, "index"])->middleware(
 
 Auth::routes();
 
-Route::get("/ordernow", [CartController::class, "orderNow"]);
-Route::post("/placeorder", [CartController::class, "placeOrder"]);
-
-Route::get("/products/delete/{product_id}", [
-  ProductController::class,
-  "destroy",
-]);
-Route::get("/users/delete/{user_id}", [UserController::class, "destroy"]);
-Route::get("/categories/delete/{category_id}", [
-  CategoryController::class,
-  "destroy",
-]);
-
 Route::resource("products", ProductController::class);
-Route::resource("carts", CartController::class);
+Route::resource("categories", CategoryController::class);
+
 Route::middleware(["auth"])->group(function () {
   Route::resource("users", UserController::class);
-  Route::resource("categories", CategoryController::class);
+  Route::resource("carts", CartController::class);
   Route::resource("orders", OrderController::class);
+  Route::get("/ordernow", [CartController::class, "index"]);
+  Route::post("/placeorder", [CartController::class, "placeOrder"]);
+});
+
+Route::group(["prefix" => "admin", "middleware" => "admin"], function () {
+  Route::resource("users", App\Http\Controllers\Admin\UserController::class);
+  Route::resource(
+    "products",
+    App\Http\Controllers\Admin\ProductController::class
+  );
+  Route::resource(
+    "categories",
+    App\Http\Controllers\Admin\CategoryController::class
+  );
+  Route::resource("orders", App\Http\Controllers\Admin\OrderController::class);
 });

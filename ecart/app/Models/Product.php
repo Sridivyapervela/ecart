@@ -7,20 +7,27 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    use HasFactory;
-    protected $fillable = [
-        'name',
-        'code',
-        'price',
-        'status',
-        'available_stock',
-        'category_id',
-    ];
-    public function category(){
-        return $this->belongsTo('App\Models\Category');
-    }
+  use HasFactory;
+  protected $fillable = [
+    "name",
+    "code",
+    "price",
+    "status",
+    "available_stock",
+    "category_id",
+  ];
+  public function category()
+  {
+    return $this->belongsTo("App\Models\Category");
+  }
 
-    public function order_item(){
-        return $this->belongsTo('App\Models\OrderItem');
-    }
+  public function order_item()
+  {
+    return $this->belongsTo("App\Models\OrderItem");
+  }
+
+  public function cart()
+  {
+    return $this->belongsTo("App\Models\Cart");
+  }
 }

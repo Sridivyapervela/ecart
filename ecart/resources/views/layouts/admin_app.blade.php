@@ -23,7 +23,7 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <a class="navbar-brand" href="{{ url('/admin/products') }}">
                     {{ config('app.name', 'Home Page') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -32,11 +32,11 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-                        <a href='/products' class="btn-sm btn-primary">Products</a>
-                        <a href='/categories' class="btn-sm btn-success ml-3">Categories</a>
-                        @auth
-                        <a href='/users/{{auth()->user()->id}}' class="btn-sm btn-success ml-3">Profile</a>
-                        @endauth
+                        <a href='/admin/products' class="btn-sm btn-primary">Products</a>
+                        <a href='/admin/categories' class="btn-sm btn-success ml-3">Categories</a>
+                        <a href='/admin/users/{{auth()->user()->id}}' class="btn-sm btn-success ml-3">Profile</a>
+                        <a href='/admin/orders' class="btn-sm btn-success ml-3">Orders</a>
+                        <a href='/admin/users' class="btn-sm btn-success ml-3">Users</a>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -71,9 +71,6 @@
                                 </form>
                                 </div>
                             </li>
-                        </div>
-                        <div class="float-right">
-                            <a class="btn btn-sm btn-success" href="/ordernow">Cart({{$count ?? 0}} )</a>
                         </div>
                         @endguest
                     </ul>

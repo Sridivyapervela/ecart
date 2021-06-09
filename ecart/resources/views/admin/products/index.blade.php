@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin_app')
 
 @section('content')
     <div class="container">
@@ -6,33 +6,41 @@
             <div class="col-md-11">
                 <div class="card">
                     <div style="font-size: 150%;" class="card-header">Products
+                        <a class='btn btn-sm btn-success ml-2' href='/admin/products/create'>Create product</a>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12">
                             <div class="col-md-11">
                                 @foreach($products as $product)
-                                @if($product->status=='active')
                                 <ul class="list-group">
                                             <li class="list-group-item">
                                                 @if(file_exists('img/products/' . $product->id . '_thumb.jpg'))
                                                 <a href="/img/products/{{$product->id}}_thumb.jpg" data-lightbox="img/products/{{$product->id}}_thumb.jpg" data-title="{{ $product->name }}">
                                                 <img class="img-fluid" src="/img/products/{{$product->id}}_thumb.jpg" alt="">
                                                 </a>
-                                                @endif
-                                                <a title="Product details" href="/products/{{ $product->id }}">{{ $product->name }}</a>
-                                                <form action="/carts" method="POST">
+                                                @endif                                    
+                                                <h5>{{ $product->name}}</h5>
+                                                Product_code: {{ $product->code}}
+                                                 <br>
+                                                Product price: {{ $product->price}}
+                                                 <br>
+                                                Product status:{{ $product->status}}
+                                                <br>
+                                                Available stock:{{ $product->available_stock}}
+                                                <br>
+                                                Category_id: {{ $product->category_id}}
+                                                <br>
+                                                <a class='btn btn-sm btn-danger ml-2' href='/admin/products/{{$product->id}}/edit'>Edit product</a>
+                                                <div class="float-right">
+                                                <form autocomplete="off" action="/admin/products/{{$product->id}}" method="POST" enctype="multipart/form-data">
                                                 @csrf
-                                                <div class="col-xs-2">
-                                                <label for="quantity" class=" text-md-right">{{ __('Quantity') }}</label>
-                                                <input name="quantity" type="number" min='1' class="form-control @error('quantity') is-invalid @enderror" required>
-                                                </div>
-                                                <input type="hidden" name="product_id" value="{{$product->id}}">
-                                                <input class="btn btn-success mt-4 float-right" type="submit" value="Add to cart">
+                                                 @method('DELETE')
+                                                <input class='btn btn-sm btn-danger' type="submit" value="Delete product">
                                                 </form>
+                                                </div>
                                             </li>
                                 </ul>
-                                @endif
                                 @endforeach
                             </div>
                             </div>

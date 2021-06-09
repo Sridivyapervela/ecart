@@ -6,12 +6,6 @@
             <div class="col-md-11">
                 <div class="card">
                     <div style="font-size: 150%;" class="card-header">{{ $product->name }}
-                        @auth
-                        @if(auth()->user()->role=='admin')
-                        <a class='btn btn-sm btn-danger ml-2' href='/products/{{$product->id}}/edit'>Edit product</a>
-                        <a class='btn btn-sm btn-danger ml-2' href='/products/delete/{{$product->id}}'>Delete product</a>
-                        @endif
-                        @endauth
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -31,14 +25,6 @@
                                     <br>
                                     Product price: {{ $product->price}}
                                     <br>
-                                    @auth
-                                    @if(auth()->user()->role=='admin')
-                                    Product status:{{ $product->status}}
-                                    <br>
-                                    Available stock:{{ $product->available_stock}}
-                                    <br>
-                                    @endif
-                                    @endauth
                                     Category_id: {{ $product->category_id}}
                                 <br>
                                     <form action="/carts" method="POST">

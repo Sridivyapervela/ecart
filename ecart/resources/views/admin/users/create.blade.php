@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin_app')
 
 @section('content')
     <div class="container">
@@ -7,7 +7,7 @@
                 <div class="card">
                     <div class="card-header">Create New user</div>
                     <div class="card-body">
-                        <form autocomplete="off" action="/users" method="POST" enctype="multipart/form-data">
+                        <form autocomplete="off" action="/admin/users" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
                                 <label for="first_name">First Name</label>
@@ -41,7 +41,7 @@
             
                             <input class="btn btn-primary mt-4" type="submit" value="Save user">
                         </form>
-                        <a class="btn btn-primary float-right" href="/users"><i class="fas fa-arrow-circle-up"></i> Back</a>
+                        <a class="btn btn-primary float-right" href="/admin/users"><i class="fas fa-arrow-circle-up"></i> Back</a>
                     </div>
                 </div>
             </div>

@@ -1,6 +1,8 @@
 <?php
-namespace App\Http\Controllers;
 
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\User;
 use App\Models\Product;
@@ -17,7 +19,7 @@ class CategoryController extends Controller
   public function index()
   {
     $categories = Category::orderBy("created_at", "DESC")->paginate(25);
-    return view("/categories/index")->with(["categories" => $categories]);
+    return view("/admin/categories/index")->with(["categories" => $categories]);
   }
 
   /**
@@ -27,7 +29,7 @@ class CategoryController extends Controller
    */
   public function create()
   {
-    //
+    return view("/admin/categories/create");
   }
 
   /**
@@ -38,19 +40,33 @@ class CategoryController extends Controller
    */
   public function store(Request $request)
   {
-    //
+    $category_codes = Category::where("id", ">", 0)
+      ->pluck("code")
+      ->toArray();
+    $request->validate([
+      "name" => "required",
+      "code" => ["required", Rule::notIn($category_codes)],
+    ]);
+    $category = new Category([
+      "name" => $request["name"],
+      "code" => $request->code,
+    ]);
+    $category->save();
+    return $this->index()->with([
+      "mes_suc" => "category " . $category->name . " is added succesfully",
+    ]);
   }
 
   /**
    * Display the specified resource.
    *
-   * @param  \App\Models\Category  $category
+   * @param  int  $id
    * @return \Illuminate\Http\Response
    */
   public function show(Category $category)
   {
     $user = auth()->user();
-    return view("/categories/show")->with([
+    return view("/admin/categories/show")->with([
       "category" => $category,
       "user" => $user,
     ]);
@@ -59,34 +75,47 @@ class CategoryController extends Controller
   /**
    * Show the form for editing the specified resource.
    *
-   * @param  \App\Models\Category  $category
+   * @param  int  $id
    * @return \Illuminate\Http\Response
    */
   public function edit(Category $category)
   {
-    //
+    return view("/admin/categories/edit")->with(["category" => $category]);
   }
 
   /**
    * Update the specified resource in storage.
    *
    * @param  \Illuminate\Http\Request  $request
-   * @param  \App\Models\Category  $category
+   * @param  int  $id
    * @return \Illuminate\Http\Response
    */
   public function update(Request $request, Category $category)
   {
-    //
+    $category_codes = Category::where("id", ">", 0)
+      ->pluck("code")
+      ->toArray();
+    $request->validate([
+      "name" => "required",
+      "code" => ["required", Rule::notIn($category_codes)],
+    ]);
+
+    $category->update([
+      "name" => $request["name"],
+      "code" => $request->code,
+    ]);
+    return redirect("/admin/categories");
   }
 
   /**
    * Remove the specified resource from storage.
    *
-   * @param  \App\Models\Category  $category
+   * @param  int  $id
    * @return \Illuminate\Http\Response
    */
   public function destroy(Category $category)
   {
-    //
+    $category->delete();
+    return redirect("/admin/categories");
   }
 }

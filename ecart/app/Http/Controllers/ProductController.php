@@ -3,17 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use App\Models\Category;
 use Illuminate\Http\Request;
-use Intervention\Image\Facades\Image;
-use Illuminate\Validation\Rule;
 
 class ProductController extends Controller
 {
-  public function __construct()
-  {
-    $this->middleware("auth")->except(["show", "index"]);
-  }
   /**
    * Display a listing of the resource.
    *
@@ -32,7 +25,7 @@ class ProductController extends Controller
    */
   public function create()
   {
-    return view("/products/create");
+    //
   }
 
   /**
@@ -43,33 +36,6 @@ class ProductController extends Controller
    */
   public function store(Request $request)
   {
-    $category_ids = Category::where("id", ">", 0)
-      ->pluck("id")
-      ->toArray();
-    $request->validate([
-      "name" => "required",
-      "code" => "required",
-      "price" => "required",
-      "status" => ["required", Rule::in(["active", "inactive"])],
-      "available_stock" => "required",
-      "category_id" => ["required", Rule::in($category_ids)],
-      "image" => "mimes:jpeg,jpg,bmp,png,gif",
-    ]);
-    $product = new product([
-      "name" => $request["name"],
-      "code" => $request->code,
-      "price" => $request->price,
-      "status" => $request->status,
-      "available_stock" => $request->available_stock,
-      "category_id" => $request->category_id,
-    ]);
-    $product->save();
-    if ($request->image) {
-      $this->saveImages($request->image, $product->id);
-    }
-    return $this->index()->with([
-      "mes_suc" => "product " . $product->name . " is added succesfully",
-    ]);
   }
 
   /**
@@ -95,7 +61,6 @@ class ProductController extends Controller
    */
   public function edit(Product $product)
   {
-    return view("/products/edit")->with(["product" => $product]);
   }
 
   /**
@@ -107,32 +72,6 @@ class ProductController extends Controller
    */
   public function update(Request $request, Product $product)
   {
-    $category_ids = Category::where("id", ">", 0)
-      ->pluck("id")
-      ->toArray();
-    $request->validate([
-      "name" => "required",
-      "code" => "required",
-      "price" => "required",
-      "status" => ["required", Rule::in(["active", "inactive"])],
-      "available_stock" => "required",
-      "category_id" => ["required", Rule::in($category_ids)],
-      "image" => "mimes:jpeg,jpg,bmp,png,gif",
-    ]);
-    $product->update([
-      "name" => $request["name"],
-      "code" => $request->code,
-      "price" => $request->price,
-      "status" => $request->status,
-      "available_stock" => $request->available_stock,
-      "category_id" => $request->category_id,
-    ]);
-    if ($request->image) {
-      $this->saveImages($request->image, $product->id);
-    }
-    return redirect("/products")->with([
-      "mes_suc" => "Succesfully updated!",
-    ]);
   }
 
   /**
@@ -143,34 +82,5 @@ class ProductController extends Controller
    */
   public function destroy(Product $product)
   {
-    abort_unless(auth()->user()->role = "admin", 403);
-    $old = $product->name;
-    $product->forceDelete();
-    return redirect("products")->with([
-      "mes_suc" => "product " . $old . " is deleted succesfully",
-    ]);
-  }
-  public function saveImages($imageInput, $product_id)
-  {
-    $image = Image::make($imageInput);
-    if ($image->width() > $image->height()) {
-      // Landscape
-      $image
-        ->widen(500)
-        ->save(public_path() . "/img/products/" . $product_id . "_large.jpg");
-      $image = Image::make($imageInput);
-      $image
-        ->widen(120)
-        ->save(public_path() . "/img/products/" . $product_id . "_thumb.jpg");
-    } else {
-      // Portrait
-      $image
-        ->heighten(500)
-        ->save(public_path() . "/img/products/" . $product_id . "_large.jpg");
-      $image = Image::make($imageInput);
-      $image
-        ->heighten(120)
-        ->save(public_path() . "/img/products/" . $product_id . "_thumb.jpg");
-    }
   }
 }

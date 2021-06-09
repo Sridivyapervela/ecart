@@ -1,12 +1,16 @@
-@extends('layouts.app')
-
+@extends('layouts.admin_app')
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-11">
                 <div class="card">
-                    <div style="font-size: 150%;" class="card-header">Hello {{ $user->firstname}} {{$user->lastname}}
-                        <br> Your orders
+                    <div style="font-size: 150%;" class="card-header">Hello Admin
+                        <br>Orders of {{ $user->firstname}} {{$user->lastname}}:
+                        <form autocomplete="off" action="/admin/users/{{$user->id}}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                @method('DELETE')
+                                <input class='btn btn-sm btn-danger' type="submit" value="Delete user">
+                        </form>
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -16,12 +20,12 @@
                                         @if($user->orders->count() > 0)
                                         @foreach($user->orders as $order)
                                             <li class="list-group-item">                                                
-                                                &nbsp;<a title="Show Details" href="/orders/{{ $order->id }}">Ordered at:{{ $order->ordered_at }} </a>
+                                                &nbsp;<a title="Show Details" href="/admin/orders/{{ $order->id }}">Ordered at:{{ $order->ordered_at }} </a>
                                                 <br>Order status:{{$order->status}} 
                                                 <br>
                                                 @foreach($order->order_items as $orderItem)
                                                     Order item id:<span class="ml-lg-2">{{ $orderItem->id }}</span>
-                                                    Order item product id:<a href="/products/{{ $orderItem->product_id }}"><span>{{ $orderItem->product_id }}</span></a>
+                                                    Order item product id:<a href="/admin/products/{{ $orderItem->product_id }}"><span>{{ $orderItem->product_id }}</span></a>
                                                     <br>
                                                 @endforeach
                                             </li>

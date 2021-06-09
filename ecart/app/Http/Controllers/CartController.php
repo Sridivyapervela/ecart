@@ -20,7 +20,13 @@ class CartController extends Controller
    */
   public function index()
   {
-    //
+    $userId = Auth::user()->id;
+    $products = Cart::where("user_id", "=", $userId)
+      ->with("product")
+      ->get();
+    return view("/carts/ordernow", [
+      "products" => $products,
+    ]);
   }
 
   /**
@@ -92,33 +98,6 @@ class CartController extends Controller
   public function destroy($id)
   {
     //
-  }
-  public static function cartItem()
-  {
-    $userId = Auth::id();
-    return Cart::where("user_id", $userId)->count();
-  }
-  public function orderNow(Request $request)
-  {
-    $userId = Auth::id();
-    $products = DB::table("carts")
-      ->join("products", "carts.product_id", "=", "products.id")
-      ->where("carts.user_id", $userId)
-      ->get();
-    $total = 0;
-    $price_list = [];
-    foreach ($products as $product) {
-      $price_per_unit = $product->price;
-      $quantity = $product->quantity;
-      $price = $price_per_unit * $quantity;
-      array_push($price_list, $price);
-      $total = $total + $price;
-    }
-    return view("/carts/ordernow", [
-      "products" => $products,
-      "total" => $total,
-      "product_prices" => $price_list,
-    ]);
   }
   public function placeOrder(Request $request)
   {

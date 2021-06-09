@@ -10,8 +10,7 @@ class OrderController extends Controller
 {
   public function __construct()
   {
-    // $this->middleware('admin')->except(['show','index']);
-    $this->middleware("auth")->except(["show", "index"]);
+    $this->middleware("auth");
   }
   /**
    * Display a listing of the resource.
@@ -20,8 +19,7 @@ class OrderController extends Controller
    */
   public function index()
   {
-    $orders = Order::orderBy("created_at", "DESC")->paginate(50);
-    return view("/orders/index")->with(["orders" => $orders]);
+    //
   }
 
   /**
@@ -64,7 +62,7 @@ class OrderController extends Controller
    */
   public function edit(Order $order)
   {
-    return view("/orders/edit")->with(["order" => $order]);
+    //
   }
 
   /**
@@ -76,23 +74,7 @@ class OrderController extends Controller
    */
   public function update(Request $request, Order $order)
   {
-    $request->validate([
-      "status" => ["required", Rule::in(["success", "failed"])],
-    ]);
-    // $status=['success','failed'];
-    // if(in_array($request->status,$status)){
-    $order->update([
-      "status" => $request->status,
-    ]);
-    return redirect("/orders")->with([
-      "mes_suc" => "Succesfully updated!",
-    ]);
-    //     }
-    // else{
-    //     return redirect('/orders')->with([
-    //         'mes_suc' => 'Please choose a valid status:Success or failed'
-    //     ]);
-    // }
+    //
   }
 
   /**

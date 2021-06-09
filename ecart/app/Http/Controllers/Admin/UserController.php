@@ -1,16 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-  public function __construct()
-  {
-    $this->middleware("auth");
-  }
   /**
    * Display a listing of the resource.
    *
@@ -18,7 +17,8 @@ class UserController extends Controller
    */
   public function index()
   {
-    //
+    $users = User::orderBy("created_at", "DESC")->paginate(25);
+    return view("/admin/users/index")->with(["users" => $users]);
   }
 
   /**
@@ -28,7 +28,7 @@ class UserController extends Controller
    */
   public function create()
   {
-    //
+    return view("/admin/users/create");
   }
 
   /**
@@ -39,7 +39,23 @@ class UserController extends Controller
    */
   public function store(Request $request)
   {
-    //
+    $request->validate([
+      "first_name" => "required",
+      "last_name" => "required",
+      "email" => "required",
+      "password" => "required",
+    ]);
+    $user = new User([
+      "first_name" => $request->first_name,
+      "last_name" => $request->last_name,
+      "email" => $request->email,
+      "password" => Hash::make($request->password),
+      // "user_id" => auth()->id(),
+    ]);
+    $user->save();
+    return redirect("/admin/users")->with([
+      "mes_suc" => "User " . $user->name . " is added succesfully",
+    ]);
   }
 
   /**
@@ -61,7 +77,7 @@ class UserController extends Controller
    */
   public function edit(User $user)
   {
-    //
+    return view("/admin/users/edit")->with(["user" => $user]);
   }
 
   /**
@@ -73,7 +89,19 @@ class UserController extends Controller
    */
   public function update(Request $request, User $user)
   {
-    //
+    $request->validate([
+      "first_name" => "required",
+      "last_name" => "required",
+      "email" => "required",
+    ]);
+    $user->update([
+      "first_name" => $request->first_name,
+      "last_name" => $request->last_name,
+      "email" => $request->email,
+    ]);
+    return redirect("/admin/users")->with([
+      "mes_suc" => "User " . $user->first_name . " is updated succesfully",
+    ]);
   }
 
   /**
@@ -84,6 +112,7 @@ class UserController extends Controller
    */
   public function destroy(User $user)
   {
-    //
+    $user->delete();
+    return redirect("/admin/users");
   }
 }

@@ -16,8 +16,7 @@
                                     <li class="list-group-item">User_email:{{$order->user->email}}</li>
                                     <li class="list-group-item">Order amount:{{$order->amount}}
                                     </li>
-                                    <li class="list-group-item">Order status:{{$order->status}}
-                                    <a class="btn btn-sm btn-primary" href="/orders/{{$order->id}}/edit">Edit status</a></li>
+                                    <li class="list-group-item">Order status:{{$order->status}}</li>
                                     <li class="list-group-item">Ordered at:{{$order->ordered_at}}</li>
                                 </ul>
                         </div>

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin_app')
 
 @section('content')
     <div class="container">
@@ -6,6 +6,14 @@
             <div class="col-md-11">
                 <div class="card">
                     <div style="font-size: 150%;" class="card-header">{{ $category->name }}
+                        <a class='btn btn-sm btn-danger ml-2' href='/admin/categories/{{$category->id}}/edit'>Edit category</a>
+                        <div class="float-right">
+                            <form autocomplete="off" action="/admin/categories/{{$category->id}}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            @method('DELETE')
+                            <input class='btn btn-sm btn-danger' type="submit" value="Delete category">
+                            </form>
+                        </div>
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -21,7 +29,7 @@
                                                 <img class="img-fluid" src="/img/products/{{$product->id}}_thumb.jpg" alt="">
                                                 </a>
                                                 @endif    
-                                                &nbsp;<a title="Show Details" href="/products/{{ $product->id }}">{{ $product->name }}</a>
+                                                &nbsp;<a title="Show Details" href="/admin/products/{{ $product->id }}">{{ $product->name }}</a>
                                                 &nbsp;<p>Product price:{{ $product->price }}</p>
                                             </li> 
                                         @endif                                         

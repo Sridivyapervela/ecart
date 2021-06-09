@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin_app')
 
 @section('content')
     <div class="container">
@@ -19,7 +19,7 @@
                                     Order amount:{{$order->amount}}<br>
                                     
                                     Order status:{{$order->status}}
-                                    <a class="btn btn-sm btn-primary" href="/orders/{{$order->id}}/edit">Edit status</a><br>
+                                    <a class="btn btn-sm btn-primary" href="/admin/orders/{{$order->id}}/edit">Edit status</a><br>
                                     Ordered at:{{$order->ordered_at}}
                                     </li>
                                 </ul>
@@ -30,7 +30,7 @@
                     </div>
                 </div>
                 <div class="mt-4">
-                    <a class="btn btn-primary btn-sm" href="/"><i class="fas fa-arrow-circle-up"></i> Back to home</a>
+                    <a class="btn btn-primary btn-sm" href="/admin/products"><i class="fas fa-arrow-circle-up"></i> Back to home</a>
                 </div>
             </div>
         </div>
